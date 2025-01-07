@@ -1,10 +1,11 @@
 import { UserService } from '../services/user.service'
 import { Controller } from '../core/decorators/controller.decorator'
-import { Delete, Get, Post } from '../core/decorators/method.decorator'
+import { Delete, Get, Patch, Post } from '../core/decorators/method.decorator'
 import { Body, Param, Req } from '../core/decorators/param.decorator'
 import { Protected } from '../decorators/protected.decorator'
 import { Request } from '../core/utils/types'
 import { CreateUserDto } from '../dto/create-user.dto'
+import { UpdateUserDto } from '../dto/update-user.dto'
 
 @Controller('user')
 export class UserController {
@@ -13,7 +14,7 @@ export class UserController {
   @Post()
   // @Protected()
   create(@Body() body: CreateUserDto, @Req() req: Request) {
-    return this.userService.create(body)
+    return this.userService.create(body, req.user)
   }
 
   @Get()
@@ -28,8 +29,13 @@ export class UserController {
     return this.userService.findOne(id)
   }
 
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(id, updateUserDto)
+  }
+
   @Delete(':id')
-  @Protected()
+  // @Protected()
   delete(@Param('id') id: string) {
     return this.userService.delete(id)
   }

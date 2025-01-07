@@ -20,8 +20,7 @@ export class AuthService {
     if (!user) {
       throw new BadRequestException('Email hoặc password không đúng!')
     }
-    // console.log('Stored hash password:', user.password)
-    // console.log('Input password:', password)
+
     const isPasswordValid = await bcrypt.compare(password, user.password!)
 
     if (!isPasswordValid) {
