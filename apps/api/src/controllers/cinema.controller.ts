@@ -1,6 +1,7 @@
 import { Controller } from '../core/decorators/controller.decorator'
 import { Delete, Get, Patch, Post } from '../core/decorators/method.decorator'
 import { Body, Param } from '../core/decorators/param.decorator'
+import { UpdateCinemaDto } from '../dto/update-cinema.dto'
 import { CinemaService } from '../services/cinema.service'
 
 @Controller('cinema')
@@ -23,7 +24,7 @@ export class CinemaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCinemaDto: any) {
+  update(@Param('id') id: string, @Body() updateCinemaDto: UpdateCinemaDto) {
     return this.cinemaService.update(id, updateCinemaDto)
   }
 

@@ -16,7 +16,7 @@ export class AuthGuard extends AppGruad {
   ) {
     super()
   }
-  canActive(context: AppContext): boolean {
+  async canActive(context: AppContext): Promise<boolean> {
     const passport = this.passportService.passport
     const controllerClass = context.getClass()
     const handler = context.getHandler()

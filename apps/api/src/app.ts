@@ -13,6 +13,7 @@ import express from 'express'
 import { expressMiddleware } from '@apollo/server/express4'
 import dotenv from 'dotenv'
 import path from 'path'
+import cors from 'cors'
 import { buildSchema } from 'type-graphql'
 import { ApolloServer, BaseContext } from '@apollo/server'
 import { AddressController } from './controllers/address.controller'
@@ -87,6 +88,16 @@ async function bootstrap() {
   })
 
   await server.start()
+  app.use(
+    '*',
+    cors({
+      origin: 'http://localhost:5173', // Your frontend URL
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true, // Allow cookies
+    }),
+  )
+
   app.use('/', express.json())
   app.use(
     '/graphql',

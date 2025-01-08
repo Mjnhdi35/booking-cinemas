@@ -142,7 +142,7 @@ export class AppManager {
             instance.use(error, req, res, next)
           },
         )
-        console.log(`dang ki thanh cong route [${router.method}] ${path} `)
+        console.log(`đăng kí thành công route [${router.method}] ${path} `)
       })
     })
   }

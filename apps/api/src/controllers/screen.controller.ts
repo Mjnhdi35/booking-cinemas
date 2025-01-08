@@ -1,6 +1,7 @@
 import { Controller } from '../core/decorators/controller.decorator'
 import { Delete, Get, Patch, Post } from '../core/decorators/method.decorator'
 import { Body, Param } from '../core/decorators/param.decorator'
+import { UpdateScreenDto } from '../dto/update-screen.dto'
 import { ScreenService } from '../services/screen.service'
 
 @Controller('screen')
@@ -23,7 +24,7 @@ export class ScreenController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateScreenDto: any) {
+  update(@Param('id') id: string, @Body() updateScreenDto: UpdateScreenDto) {
     return this.screenService.update(id, updateScreenDto)
   }
 

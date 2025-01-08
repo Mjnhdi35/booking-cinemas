@@ -1,6 +1,7 @@
 import { Controller } from '../core/decorators/controller.decorator'
 import { Delete, Get, Patch, Post } from '../core/decorators/method.decorator'
 import { Body, Param } from '../core/decorators/param.decorator'
+import { UpdateTicketDto } from '../dto/update-ticket.dto'
 import { TicketService } from '../services/ticket.service'
 
 @Controller('ticket')
@@ -23,7 +24,7 @@ export class TicketController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTicketDto: any) {
+  update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
     return this.ticketService.update(id, updateTicketDto)
   }
 

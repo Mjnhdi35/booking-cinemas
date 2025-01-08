@@ -1,6 +1,7 @@
 import { Controller } from '../core/decorators/controller.decorator'
 import { Delete, Get, Patch, Post } from '../core/decorators/method.decorator'
 import { Body, Param } from '../core/decorators/param.decorator'
+import { UpdateShowtimeDto } from '../dto/update-showtime.dto'
 import { ShowtimeService } from '../services/showtime.service'
 
 @Controller('showtime')
@@ -23,7 +24,10 @@ export class ShowtimeController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShowtimeDto: any) {
+  update(
+    @Param('id') id: string,
+    @Body() updateShowtimeDto: UpdateShowtimeDto,
+  ) {
     return this.showtimeService.update(id, updateShowtimeDto)
   }
 
