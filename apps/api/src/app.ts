@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { UserController } from './controllers/user.controller'
+
 import { AppManager } from './core/app.manager'
 import { connectDb } from './db/connect.db'
 import { AuthGuard } from './guards/auth.gaurd'
@@ -21,11 +21,13 @@ import { AdminController } from './controllers/admin.controller'
 import { BookingController } from './controllers/booking.controller'
 import { CinemaController } from './controllers/cinema.controller'
 import { ManagerController } from './controllers/manager.controller'
-import { MovieController } from './controllers/movie.controller'
+
 import { ScreenController } from './controllers/screen.controller'
 import { SeatController } from './controllers/seat.controller'
 import { ShowtimeController } from './controllers/showtime.controller'
 import { TicketController } from './controllers/ticket.controller'
+import { UserController } from './controllers/users/user.controller'
+import { MovieController } from './controllers/movies/movie.controller'
 dotenv.config()
 
 const app = new AppManager({
