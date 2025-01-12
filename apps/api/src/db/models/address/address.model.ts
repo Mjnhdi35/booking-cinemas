@@ -1,15 +1,19 @@
 import mongoose, { Document, Schema } from 'mongoose'
-import { ICinema } from '../cinemas/cinema.model'
 
 export interface IAddress extends Document {
+  cinemaId?: mongoose.Types.ObjectId
   address: string
   lat: number
   lng: number
-  cinema: mongoose.Types.ObjectId | ICinema
 }
 
 const addressSchema = new mongoose.Schema<IAddress>(
   {
+    cinemaId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Cinema',
+      unique: true,
+    },
     address: {
       type: String,
       required: true,
@@ -20,11 +24,6 @@ const addressSchema = new mongoose.Schema<IAddress>(
     },
     lng: {
       type: Number,
-      required: true,
-    },
-    cinema: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Cinema',
       required: true,
     },
   },

@@ -1,21 +1,22 @@
 import mongoose from 'mongoose'
-import { IShowtime } from '../showtimes/showtime.model'
 
 export enum Genre {
-  ACTION = 'Hành Động',
-  ROMANCE = 'Tình Cảm',
-  COMEDY = 'Hài',
-  HORROR = 'Kinh Dị',
-  SCI_FI = 'Viễn Tưởng',
-  DRAMA = 'Tâm Lý',
-  WAR = 'Chiến Tranh',
-  ADVENTURE = 'Phiêu Lưu',
-  MYTHOLOGY = 'Thần Thoại',
-  CRIME = 'Hình Sự',
-  PERIOD_DRAMA = 'Cổ Trang',
-  ANIMATION = 'Hoạt Hình',
-  FAMILY = 'Gia Đình',
-  DOCUMENTARY = 'Tài Liệu',
+  HanhDong = 'Hành Động',
+  TamLy = 'Tâm Lý',
+  TamLyHinhSu = 'Tâm Lý Hình Sự',
+  HoatHinh = 'Hoạt Hình',
+  KinhDi = 'Kinh Dị',
+  KieuNhat = 'Kiểu Nhật',
+  BiKich = 'Bi Kịch',
+  Comedi = 'Hài Hước',
+  TinhCam = 'Tình Cảm',
+  PhiVu = 'Phi Vụ',
+  LyKy = 'Lý Kỳ',
+  ChienTranh = 'Chiến Tranh',
+  SuKienLichSu = 'Sự Kiện Lịch Sử',
+  DuongPho = 'Đường Phố',
+  GiaDinh = 'Gia Đình',
+  CuocSong = 'Cuộc Sống',
 }
 
 export interface IMovie extends Document {
@@ -25,8 +26,6 @@ export interface IMovie extends Document {
   duration: number
   releaseDate: Date
   posterUrl?: string
-  releaseDateString?: string
-  showtimes: mongoose.Types.ObjectId[] | IShowtime[]
 }
 
 const movieSchema = new mongoose.Schema<IMovie>(
@@ -44,28 +43,9 @@ const movieSchema = new mongoose.Schema<IMovie>(
       default: Date.now(),
     },
     posterUrl: { type: String, required: false },
-    releaseDateString: { type: String, required: false },
-    showtimes: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'Showtime', required: true },
-    ],
   },
-  { timestamps: true, toJSON: { getters: true } },
+  { timestamps: true },
 )
-movieSchema.pre('save', function (next) {
-  if (this.releaseDateString) {
-    const [day, month, year] = this.releaseDateString.split('/')
-    const date = new Date(+year, +month - 1, +day)
-    this.releaseDate = date
-  }
-  next()
-})
-movieSchema.virtual('formattedReleaseDate').get(function (this: IMovie) {
-  const date = this.releaseDate
-  const day = date.getDate().toString().padStart(2, '0')
-  const month = (date.getMonth() + 1).toString().padStart(2, '0')
-  const year = date.getFullYear()
-  return `${day}/${month}/${year}`
-})
 
 const Movie = mongoose.model<IMovie>('Movie', movieSchema)
 

@@ -27,7 +27,7 @@ export class MovieService {
     if (!movie) {
       throw new BadRequestException('Movie not found')
     }
-    await this.movieModel.findByIdAndDelete(id)
+    await this.movieModel.deleteOne({ id })
     return 'Movie successfully deleted'
   }
 }

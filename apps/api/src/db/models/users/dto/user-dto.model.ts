@@ -1,27 +1,18 @@
 import { Expose } from 'class-transformer'
 import {
-  IsArray,
   IsEmail,
-  IsEnum,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   Length,
 } from 'class-validator'
-import { Role } from '../user.model'
-import mongoose, { ObjectId } from 'mongoose'
-import { ITicket } from '../../tickets/ticket.model'
-import { IBooking } from '../../bookings/booking.model'
 
+// DTO for creating a new user
 export class CreateUserDto {
   @Expose()
   @IsString()
+  @Length(1, 255)
   name: string
-
-  @Expose()
-  @IsNumber()
-  age: number
 
   @Expose()
   @IsString()
@@ -30,85 +21,35 @@ export class CreateUserDto {
 
   @Expose()
   @IsString()
+  @Length(6, 255) // Ensure password has a minimum length
   password: string
 
   @Expose()
-  @IsString()
-  phone: string
-
-  @Expose()
-  @IsString()
-  cccd: string
-
-  @Expose()
-  @IsString()
   @IsOptional()
-  image?: string
-
-  @Expose()
-  @IsEnum(Role)
-  role: Role
-
-  @Expose()
-  @IsArray()
-  @IsOptional()
-  tickets?: ObjectId[] | ITicket[]
-
-  @Expose()
-  @IsArray()
-  @IsOptional()
-  bookings?: ObjectId[] | IBooking[]
+  @IsNumber()
+  age?: number
 }
 
+// DTO for updating a user
 export class UpdateUserDto {
   @Expose()
-  @IsString()
   @IsOptional()
+  @IsString()
   name?: string
 
   @Expose()
-  @IsNumber()
   @IsOptional()
-  age?: number
-
-  @Expose()
   @IsString()
   @IsEmail()
-  @IsOptional()
   email?: string
 
   @Expose()
-  @IsString()
   @IsOptional()
+  @IsString()
   password?: string
 
   @Expose()
-  @IsString()
   @IsOptional()
-  phone?: string
-
-  @Expose()
-  @IsString()
-  @IsOptional()
-  cccd?: string
-
-  @Expose()
-  @IsString()
-  @IsOptional()
-  image?: string
-
-  @Expose()
-  @IsEnum(Role)
-  @IsOptional()
-  role?: Role
-
-  @Expose()
-  @IsArray()
-  @IsOptional()
-  tickets?: ObjectId[] | ITicket[]
-
-  @Expose()
-  @IsArray()
-  @IsOptional()
-  bookings?: ObjectId[] | IBooking[]
+  @IsNumber()
+  age?: number
 }
