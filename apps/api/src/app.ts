@@ -17,12 +17,18 @@ import cors from 'cors'
 import { buildSchema } from 'type-graphql'
 import { ApolloServer, BaseContext } from '@apollo/server'
 import { UserController } from './controllers/users/user.controller'
+import { AddressController } from './controllers/address/address.controller'
 import { MovieController } from './controllers/movies/movie.controller'
 
 dotenv.config()
 
 const app = new AppManager({
-  controllers: [UserController, AuthController, MovieController],
+  controllers: [
+    UserController,
+    MovieController,
+    AuthController,
+    AddressController,
+  ],
   prefix: ['api'],
   guards: [AuthGuard],
   middlewares: [],
