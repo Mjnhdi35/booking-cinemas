@@ -1,6 +1,7 @@
 import { BadRequestException } from '../../core/base/error.base'
 import { Injectable } from '../../core/decorators/injectable.decorator'
 import { Inject } from '../../core/decorators/param.decorator'
+import { UpdateMovieDto } from '../../db/models/movies/dto/movie-dto.model'
 import { Movie } from '../../db/models/movies/movie.model'
 
 @Injectable()
@@ -16,8 +17,10 @@ export class MovieService {
   async findOne(id: string) {
     return await this.movieModel.findById(id)
   }
-  async update(id: string) {
-    return await this.movieModel.findByIdAndUpdate(id)
+  async update(id: string, updateMovieDto: UpdateMovieDto) {
+    return await this.movieModel.findByIdAndUpdate(id, updateMovieDto, {
+      new: true,
+    })
   }
   async delete(id: string) {
     const movie = await this.movieModel.findById(id)
