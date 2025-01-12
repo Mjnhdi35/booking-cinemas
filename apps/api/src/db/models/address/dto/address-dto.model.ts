@@ -1,22 +1,35 @@
 import { Expose } from 'class-transformer'
-import { IsString, Length } from 'class-validator'
+import { IsNumber, IsOptional, IsString, Length } from 'class-validator'
 
 // DTO for creating a new address
-export class createAddressDto {
+export class CreateAddressDto {
+  @IsString()
   @Expose()
   address: string
+
+  @Expose()
+  @IsNumber()
+  lat: number
+
+  @Expose()
+  @IsNumber()
+  lng: number
 }
 
 // DTO for updating a address
-export class updateAddressDto {
+export class UpdateAddressDto {
   @Expose()
   @IsString()
-  @Length(1, 255)
+  @IsOptional()
   address?: string
-}
 
-// DTO for responding with user data (output DTO)
-export class addressResponseDto {
   @Expose()
-  id: string
+  @IsNumber()
+  @IsOptional()
+  lat?: number
+
+  @Expose()
+  @IsNumber()
+  @IsOptional()
+  lng?: number
 }

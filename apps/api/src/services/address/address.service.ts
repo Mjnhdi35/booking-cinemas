@@ -2,7 +2,7 @@ import { BadRequestException } from '../../core/base/error.base'
 import { Injectable } from '../../core/decorators/injectable.decorator'
 import { Inject } from '../../core/decorators/param.decorator'
 import { Address } from '../../db/models/address/address.model'
-import { updateAddressDto } from '../../db/models/address/dto/address-dto.model'
+import { UpdateAddressDto } from '../../db/models/address/dto/address-dto.model'
 
 @Injectable()
 export class AddressService {
@@ -24,7 +24,7 @@ export class AddressService {
     return address
   }
 
-  async update(id: string, updateAddressDto: updateAddressDto) {
+  async update(id: string, updateAddressDto: UpdateAddressDto) {
     const address = await this.addressModel.findById(id)
     if (!address) {
       throw new BadRequestException('Address not found')
