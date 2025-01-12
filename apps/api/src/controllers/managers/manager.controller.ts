@@ -6,25 +6,21 @@ import {
   Post,
 } from '../../core/decorators/method.decorator'
 import { Body, Param, Req } from '../../core/decorators/param.decorator'
-import {
-  CreateAddressDto,
-  UpdateAddressDto,
-} from '../../db/models/address/dto/address-dto.model'
+import { Request } from '../../core/utils/types'
+import { ManagerService } from '../../services/managers/manager.service'
 
-import { AddressService } from '../../services/address/address.service'
-
-@Controller('address')
-export class AddressController {
-  constructor(private addressService: AddressService) {}
+@Controller('managers')
+export class ManagerController {
+  constructor(private managerService: ManagerService) {}
 
   @Post()
-  async create(@Body() body: any, createAddressDto: CreateAddressDto) {
+  async create(@Body() body: any, @Req() req: Request) {
     try {
-      const address = await this.addressService.create(body)
+      const manager = await this.managerService.create(body)
       return {
         status: 'success',
-        message: 'address created successfully',
-        data: address,
+        message: 'Manager created successfully',
+        data: manager,
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
@@ -34,10 +30,10 @@ export class AddressController {
   @Get()
   async find() {
     try {
-      const address = await this.addressService.find()
+      const managers = await this.managerService.find()
       return {
         status: 'success',
-        data: address,
+        data: managers,
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
@@ -47,39 +43,34 @@ export class AddressController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
-      const address = await this.addressService.findOne(id)
+      const manager = await this.managerService.findOne(id)
       return {
         status: 'success',
-        data: address,
+        data: manager,
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
     }
   }
-
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateAddressDto: UpdateAddressDto,
-  ) {
+  async update(@Param('id') id: string) {
     try {
-      await this.addressService.update(id, updateAddressDto)
+      await this.managerService.update(id)
       return {
         status: 'success',
-        message: 'Address updated successfully',
+        message: 'Manager updated successfully',
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
     }
   }
-
   @Delete(':id')
   async delete(@Param('id') id: string) {
     try {
-      await this.addressService.delete(id)
+      await this.managerService.delete(id)
       return {
         status: 'success',
-        message: 'Movie deleted successfully',
+        message: 'Manager deleted successfully',
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
