@@ -39,7 +39,7 @@ export class AddressService {
     if (!address) {
       throw new BadRequestException('Address not found')
     }
-    await this.addressModel.deleteOne({ _id: id })
+    await this.addressModel.findByIdAndDelete(id)
     return 'Successfully deleted'
   }
 }

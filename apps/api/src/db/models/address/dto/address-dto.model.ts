@@ -1,10 +1,10 @@
 import { Expose } from 'class-transformer'
-import { IsNumber, IsOptional, IsString, Length } from 'class-validator'
+import { IsString, IsNumber, IsOptional } from 'class-validator'
+import { ICinema } from '../../cinemas/cinema.model'
 
-// DTO for creating a new address
 export class CreateAddressDto {
-  @IsString()
   @Expose()
+  @IsString()
   address: string
 
   @Expose()
@@ -14,22 +14,29 @@ export class CreateAddressDto {
   @Expose()
   @IsNumber()
   lng: number
+
+  @Expose()
+  @IsOptional()
+  cinema?: string | ICinema
 }
 
-// DTO for updating a address
 export class UpdateAddressDto {
   @Expose()
-  @IsString()
   @IsOptional()
+  @IsString()
   address?: string
 
   @Expose()
-  @IsNumber()
   @IsOptional()
+  @IsNumber()
   lat?: number
 
   @Expose()
-  @IsNumber()
   @IsOptional()
+  @IsNumber()
   lng?: number
+
+  @Expose()
+  @IsOptional()
+  cinema?: string | ICinema
 }
