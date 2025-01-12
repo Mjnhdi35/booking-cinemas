@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { AppManager } from './core/app.manager'
 import { connectDb } from './db/connect.db'
 import { AuthGuard } from './guards/auth.gaurd'
-import { AuthController } from './controllers/auth.controller'
+import { AuthController } from './controllers/auth/auth.controller'
 import { BaseResponseFormatter } from './interceptors/response-formatter.interceptor'
 import { BodyValidateInterceptor } from './interceptors/body-validate.interceptor'
 import { ValidationPipe } from './pipes/validation.pipe'
@@ -16,18 +16,10 @@ import path from 'path'
 import cors from 'cors'
 import { buildSchema } from 'type-graphql'
 import { ApolloServer, BaseContext } from '@apollo/server'
-import { AddressController } from './controllers/address.controller'
-import { AdminController } from './controllers/admin.controller'
-import { BookingController } from './controllers/booking.controller'
-import { CinemaController } from './controllers/cinema.controller'
-import { ManagerController } from './controllers/manager.controller'
 
-import { ScreenController } from './controllers/screen.controller'
-import { SeatController } from './controllers/seat.controller'
-import { ShowtimeController } from './controllers/showtime.controller'
-import { TicketController } from './controllers/ticket.controller'
 import { UserController } from './controllers/users/user.controller'
-import { MovieController } from './controllers/movies/movie.controller'
+import { AddressController } from './controllers/address/address.controller'
+
 dotenv.config()
 
 const app = new AppManager({
@@ -35,15 +27,7 @@ const app = new AppManager({
     UserController,
     AuthController,
     AddressController,
-    AdminController,
-    BookingController,
-    CinemaController,
-    ManagerController,
-    MovieController,
-    ScreenController,
-    SeatController,
-    ShowtimeController,
-    TicketController,
+   
   ],
   prefix: ['api'],
   guards: [AuthGuard],

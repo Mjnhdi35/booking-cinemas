@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose'
 
 export interface IAddress extends Document {
-  cinemaId: mongoose.Types.ObjectId
+  cinemaId?: mongoose.Types.ObjectId
   address: string
   lat: number
   lng: number

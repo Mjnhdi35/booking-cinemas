@@ -1,12 +1,12 @@
 import { JwtPayload } from 'jsonwebtoken'
 import { Injectable } from '../core/decorators/injectable.decorator'
 import { JwtStrategy } from '../strategies/jwt.stategy'
-import { PassportService } from '../services/passport.service'
 import { AppContext } from '../core/base/context.base'
 import { AppGruad } from '../core/base/guard.base'
 import { PROTECTED_METADATA_KEY } from '../utils/constants'
 import { getMetadata } from '../core/metadata/metadata'
 import { UnAuthorizedException } from '../core/base/error.base'
+import { PassportService } from '../services/passport/passport.service'
 
 @Injectable()
 export class AuthGuard extends AppGruad {

@@ -1,8 +1,8 @@
 import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt'
 import { Injectable } from '../core/decorators/injectable.decorator'
-import { PassportService } from '../services/passport.service'
 import { JwtPayload } from 'jsonwebtoken'
 import { Request } from '../core/utils/types'
+import { PassportService } from '../services/passport/passport.service'
 
 @Injectable()
 export class JwtStrategy extends Strategy {
