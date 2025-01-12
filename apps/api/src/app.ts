@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+
 import { AppManager } from './core/app.manager'
 import { connectDb } from './db/connect.db'
 import { AuthGuard } from './guards/auth.gaurd'
@@ -16,17 +17,17 @@ import cors from 'cors'
 import { buildSchema } from 'type-graphql'
 import { ApolloServer, BaseContext } from '@apollo/server'
 import { UserController } from './controllers/users/user.controller'
-import { ManagerController } from './controllers/managers/manager.controller'
-import { CinemaController } from './controllers/cinemas/cinemas.controller'
+import { AddressController } from './controllers/address/address.controller'
+import { MovieController } from './controllers/movies/movie.controller'
 
 dotenv.config()
 
 const app = new AppManager({
   controllers: [
     UserController,
+    MovieController,
     AuthController,
-    ManagerController,
-    CinemaController,
+    AddressController,
   ],
   prefix: ['api'],
   guards: [AuthGuard],

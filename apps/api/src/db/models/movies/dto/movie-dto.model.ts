@@ -1,23 +1,14 @@
-import {
-  IsArray,
-  IsDateString,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator'
-import { Genre } from '../movie.model'
 import { Expose } from 'class-transformer'
-import { IShowtime } from '../../showtimes/showtime.model'
-import { ObjectId } from 'mongoose'
+import { IsDate, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
+import { Genre } from '../movie.model'
 
 export class CreateMovieDto {
-  @Expose()
   @IsString()
+  @Expose()
   title: string
 
-  @Expose()
   @IsString()
+  @Expose()
   director: string
 
   @Expose()
@@ -29,50 +20,43 @@ export class CreateMovieDto {
   duration: number
 
   @Expose()
+  @IsDate()
   @IsOptional()
-  @IsDateString()
-  releaseDateString?: string
+  releaseDate?: Date
 
-  @Expose()
   @IsOptional()
   @IsString()
-  posterUrl?: string
-
   @Expose()
-  @IsArray()
-  @IsOptional()
-  showtimes: ObjectId[] | IShowtime[]
+  posterUrl?: string
 }
-
 export class UpdateMovieDto {
-  @Expose()
+  @IsOptional()
   @IsString()
-  title: string
-
   @Expose()
-  @IsString()
-  director: string
+  title?: string
 
+  @IsString()
+  @Expose()
+  @IsOptional()
+  director?: string
+
+  @IsOptional()
   @Expose()
   @IsEnum(Genre)
-  genre: Genre
+  genre?: Genre
 
   @Expose()
   @IsNumber()
-  duration: number
-
-  @Expose()
   @IsOptional()
-  @IsDateString()
-  releaseDateString?: string
+  duration?: number
 
   @Expose()
+  @IsDate()
+  @IsOptional()
+  releaseDate?: Date
+
   @IsOptional()
   @IsString()
-  posterUrl?: string
-
   @Expose()
-  @IsArray()
-  @IsOptional()
-  showtimes: ObjectId[] | IShowtime[]
+  posterUrl?: string
 }

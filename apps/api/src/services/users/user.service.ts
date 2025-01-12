@@ -71,7 +71,7 @@ export class UserService {
       throw new BadRequestException('User not found')
     }
 
-    await this.userModel.findByIdAndDelete(id)
+    await this.userModel.deleteOne({ _id: id })
     return 'User successfully deleted'
   }
 }
