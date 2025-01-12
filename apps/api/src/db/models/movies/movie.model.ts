@@ -1,27 +1,22 @@
-import mongoose, { Document, Schema } from 'mongoose'
+import mongoose from 'mongoose'
 
 export enum Genre {
-  ACTION = 'ACTION',
-  ADVENTURE = 'ADVENTURE',
-  ANIMATION = 'ANIMATION',
-  COMEDY = 'COMEDY',
-  CRIME = 'CRIME',
-  DOCUMENTARY = 'DOCUMENTARY',
-  DRAMA = 'DRAMA',
-  FAMILY = 'FAMILY',
-  FANTASY = 'FANTASY',
-  FILM_NOIR = 'FILM_NOIR',
-  HISTORY = 'HISTORY',
-  HORROR = 'HORROR',
-  MUSIC = 'MUSIC',
-  MYSTERY = 'MYSTERY',
-  ROMANCE = 'ROMANCE',
-  SCI_FI = 'SCI_FI',
-  SHORT = 'SHORT',
-  SPORT = 'SPORT',
-  THRILLER = 'THRILLER',
-  WAR = 'WAR',
-  WESTERN = 'WESTERN',
+  HanhDong = 'Hành Động',
+  TamLy = 'Tâm Lý',
+  TamLyHinhSu = 'Tâm Lý Hình Sự',
+  HoatHinh = 'Hoạt Hình',
+  KinhDi = 'Kinh Dị',
+  KieuNhat = 'Kiểu Nhật',
+  BiKich = 'Bi Kịch',
+  Comedi = 'Hài Hước',
+  TinhCam = 'Tình Cảm',
+  PhiVu = 'Phi Vụ',
+  LyKy = 'Lý Kỳ',
+  ChienTranh = 'Chiến Tranh',
+  SuKienLichSu = 'Sự Kiện Lịch Sử',
+  DuongPho = 'Đường Phố',
+  GiaDinh = 'Gia Đình',
+  CuocSong = 'Cuộc Sống',
 }
 
 export interface IMovie extends Document {
@@ -31,43 +26,27 @@ export interface IMovie extends Document {
   duration: number
   releaseDate: Date
   posterUrl?: string
-  showtimes: mongoose.Types.ObjectId[]
 }
 
 const movieSchema = new mongoose.Schema<IMovie>(
   {
-    title: {
-      type: String,
-      required: true,
-    },
-    director: {
-      type: String,
-      required: true,
-    },
+    title: { type: String, required: [true, 'Movie is required'] },
+    director: { type: String, required: [true, 'Director is required'] },
     genre: {
       type: String,
       enum: Object.values(Genre),
-      required: true,
-    },
-    duration: {
-      type: Number,
-      required: true,
+      required: false,
     },
     releaseDate: {
       type: Date,
-      required: true,
+      required: false,
+      default: Date.now(),
     },
-    posterUrl: {
-      type: String,
-    },
-    showtimes: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Showtime',
-      },
-    ],
+    posterUrl: { type: String, required: false },
   },
   { timestamps: true },
 )
 
-export const Movie = mongoose.model<IMovie>('Movie', movieSchema)
+const Movie = mongoose.model<IMovie>('Movie', movieSchema)
+
+export { Movie }
