@@ -12,10 +12,8 @@ export interface IUser extends Document {
   password: string
   email: string
   role: Role
-  bookings: mongoose.Types.ObjectId[]
-  tickets: mongoose.Types.ObjectId[]
-  admin?: mongoose.Types.ObjectId
-  manager?: mongoose.Types.ObjectId
+  phone: string
+  cccd: string
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -27,9 +25,10 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     email: {
       type: String,
-      required: true,
+      required: [true, 'Email is required'],
       unique: true,
       trim: true,
+      match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address'],
     },
     age: {
       type: Number,
@@ -37,24 +36,23 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     password: {
       type: String,
-      require: true,
+      required: [true, 'Password is required'],
     },
-    bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],
-    tickets: [{ type: Schema.Types.ObjectId, ref: 'Ticket' }],
+    phone: {
+      type: String,
+      required: [true, 'Phone number is required'],
+      match: [/^\d{10,11}$/, 'Phone number must be 10-11 digits'],
+    },
+    cccd: {
+      type: String,
+      required: [true, 'CCCD is required'],
+      unique: true,
+      match: [/^\d{12}$/, 'CCCD must be a 12-digit number'],
+    },
     role: {
       type: String,
       enum: Object.values(Role),
       default: Role.USER,
-    },
-    admin: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Admin',
-      required: false,
-    },
-    manager: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Manager',
-      required: false,
     },
   },
   { timestamps: true },

@@ -1,21 +1,14 @@
 import { Expose } from 'class-transformer'
-import {
-  IsString,
-  IsOptional,
-  IsEnum,
-  IsNumber,
-  IsDate,
-  IsArray,
-} from 'class-validator'
+import { IsDate, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
 import { Genre } from '../movie.model'
 
 export class CreateMovieDto {
-  @Expose()
   @IsString()
+  @Expose()
   title: string
 
-  @Expose()
   @IsString()
+  @Expose()
   director: string
 
   @Expose()
@@ -28,65 +21,42 @@ export class CreateMovieDto {
 
   @Expose()
   @IsDate()
-  releaseDate: Date
+  @IsOptional()
+  releaseDate?: Date
 
-  @Expose()
   @IsOptional()
   @IsString()
+  @Expose()
   posterUrl?: string
 }
-
 export class UpdateMovieDto {
-  @Expose()
   @IsOptional()
   @IsString()
+  @Expose()
   title?: string
 
+  @IsString()
   @Expose()
   @IsOptional()
-  @IsString()
   director?: string
 
-  @Expose()
   @IsOptional()
+  @Expose()
   @IsEnum(Genre)
   genre?: Genre
 
   @Expose()
-  @IsOptional()
   @IsNumber()
+  @IsOptional()
   duration?: number
 
   @Expose()
-  @IsOptional()
   @IsDate()
+  @IsOptional()
   releaseDate?: Date
 
-  @Expose()
   @IsOptional()
   @IsString()
-  posterUrl?: string
-}
-
-export class MovieResponseDto {
-  @Expose()
-  id: string
-
-  @Expose()
-  title: string
-
-  @Expose()
-  director: string
-
-  @Expose()
-  genre: Genre
-
-  @Expose()
-  duration: number
-
-  @Expose()
-  releaseDate: Date
-
   @Expose()
   posterUrl?: string
 }

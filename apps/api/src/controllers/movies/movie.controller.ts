@@ -7,21 +7,23 @@ import {
 } from '../../core/decorators/method.decorator'
 import { Body, Param, Req } from '../../core/decorators/param.decorator'
 import { Request } from '../../core/utils/types'
+import {
+  CreateMovieDto,
+  UpdateMovieDto,
+} from '../../db/models/movies/dto/movie-dto.model'
 import { MovieService } from '../../services/movies/movie.service'
 
 @Controller('movies')
 export class MovieController {
   constructor(private movieService: MovieService) {}
 
-  // Route tạo phim mới
   @Post()
-  async create(@Body() body: any, @Req() req: Request) {
+  async create(@Body() body: CreateMovieDto, @Req() req: Request) {
     try {
       const movie = await this.movieService.create(body)
-
       return {
         status: 'success',
-        message: 'Movie created successfully',
+        message: 'movie created successfully',
         data: movie,
       }
     } catch (error: any) {
@@ -29,7 +31,6 @@ export class MovieController {
     }
   }
 
-  // Route lấy tất cả các phim
   @Get()
   async find() {
     try {
@@ -43,7 +44,6 @@ export class MovieController {
     }
   }
 
-  // Route lấy phim theo ID
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
@@ -56,23 +56,21 @@ export class MovieController {
       return { status: 'error', message: error.message }
     }
   }
-
-  // Route cập nhật thông tin phim
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() body: any) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateMovieDto: UpdateMovieDto,
+  ) {
     try {
-      const updatedMovie = await this.movieService.update(id, body)
+      await this.movieService.update(id, updateMovieDto)
       return {
         status: 'success',
         message: 'Movie updated successfully',
-        data: updatedMovie,
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
     }
   }
-
-  // Route xóa phim theo ID
   @Delete(':id')
   async delete(@Param('id') id: string) {
     try {

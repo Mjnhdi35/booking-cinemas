@@ -53,27 +53,3 @@ export class UpdateUserDto {
   @IsNumber()
   age?: number
 }
-
-// DTO for responding with user data (output DTO)
-export class UserResponseDto {
-  @Expose()
-  id: string
-
-  @Expose()
-  name: string
-
-  @Expose()
-  email: string
-
-  @Expose()
-  age?: number
-
-  @Expose()
-  role: string
-
-  @Expose()
-  bookings: string[]
-
-  @Expose()
-  tickets: string[]
-}
