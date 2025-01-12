@@ -6,25 +6,25 @@ import {
   Post,
 } from '../../core/decorators/method.decorator'
 import { Body, Param, Req } from '../../core/decorators/param.decorator'
+import { Request } from '../../core/utils/types'
 import {
-  CreateAddressDto,
-  UpdateAddressDto,
-} from '../../db/models/address/dto/address-dto.model'
+  CreateScreenDto,
+  UpdateScreenDto,
+} from '../../db/models/screens/dto/screen-dto.model'
+import { ScreenService } from '../../services/screens/screen.service'
 
-import { AddressService } from '../../services/address/address.service'
-
-@Controller('address')
-export class AddressController {
-  constructor(private addressService: AddressService) {}
+@Controller('screens')
+export class ScreenController {
+  constructor(private screenService: ScreenService) {}
 
   @Post()
-  async create(@Body() body: any, createAddressDto: CreateAddressDto) {
+  async create(@Body() body: CreateScreenDto, @Req() req: Request) {
     try {
-      const address = await this.addressService.create(body)
+      const screen = await this.screenService.create(body)
       return {
         status: 'success',
-        message: 'address created successfully',
-        data: address,
+        message: 'Screen created successfully',
+        data: screen,
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
@@ -34,10 +34,10 @@ export class AddressController {
   @Get()
   async find() {
     try {
-      const address = await this.addressService.find()
+      const screens = await this.screenService.find()
       return {
         status: 'success',
-        data: address,
+        data: screens,
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
@@ -47,39 +47,37 @@ export class AddressController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
-      const address = await this.addressService.findOne(id)
+      const screen = await this.screenService.findOne(id)
       return {
         status: 'success',
-        data: address,
+        data: screen,
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
     }
   }
-
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateAddressDto: UpdateAddressDto,
+    @Body() updateScreenDto: UpdateScreenDto,
   ) {
     try {
-      await this.addressService.update(id, updateAddressDto)
+      await this.screenService.update(id, updateScreenDto)
       return {
         status: 'success',
-        message: 'Address updated successfully',
+        message: 'Screen updated successfully',
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
     }
   }
-
   @Delete(':id')
   async delete(@Param('id') id: string) {
     try {
-      await this.addressService.delete(id)
+      await this.screenService.delete(id)
       return {
         status: 'success',
-        message: 'Movie deleted successfully',
+        message: 'Screen deleted successfully',
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
