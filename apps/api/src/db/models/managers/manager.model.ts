@@ -5,6 +5,7 @@ import { Role } from '../users/user.model'
 export interface IManager extends Document {
   name: string
   role: Role
+  password: string
   cinemas: mongoose.Types.ObjectId[] | ICinema[]
 }
 
@@ -18,6 +19,10 @@ const managerSchema = new mongoose.Schema<IManager>(
         required: true,
       },
     ],
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+    },
     role: {
       type: String,
       enum: Object.values(Role),

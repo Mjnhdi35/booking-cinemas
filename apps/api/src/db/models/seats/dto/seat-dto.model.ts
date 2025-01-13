@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator'
-import { ObjectId } from 'mongoose'
+import { ObjectId, Types } from 'mongoose'
 import { IBooking } from '../../bookings/booking.model'
 import { IScreen } from '../../screens/screen.model'
 
@@ -22,10 +22,10 @@ export class CreateSeatDto {
   @Expose()
   @IsArray()
   @IsOptional()
-  bookings: ObjectId[] | IBooking[]
+  bookings: Types.ObjectId[] | IBooking[]
 
   @Expose()
-  screen: ObjectId | IScreen
+  screen: Types.ObjectId | IScreen
 }
 
 export class UpdateSeatDto {
@@ -40,8 +40,8 @@ export class UpdateSeatDto {
   @Expose()
   @IsArray()
   @IsOptional()
-  bookings: ObjectId[] | IBooking[]
+  bookings: Types.ObjectId[] | IBooking[]
 
   @Expose()
-  screen: ObjectId | IScreen
+  screen: Types.ObjectId | IScreen
 }

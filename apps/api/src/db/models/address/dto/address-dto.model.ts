@@ -1,6 +1,7 @@
 import { Expose } from 'class-transformer'
 import { IsString, IsNumber, IsOptional } from 'class-validator'
 import { ICinema } from '../../cinemas/cinema.model'
+import { Types } from 'mongoose'
 
 export class CreateAddressDto {
   @Expose()
@@ -17,7 +18,7 @@ export class CreateAddressDto {
 
   @Expose()
   @IsOptional()
-  cinema?: string | ICinema
+  cinema?: Types.ObjectId | ICinema
 }
 
 export class UpdateAddressDto {
@@ -38,5 +39,5 @@ export class UpdateAddressDto {
 
   @Expose()
   @IsOptional()
-  cinema?: string | ICinema
+  cinema?: Types.ObjectId | ICinema
 }

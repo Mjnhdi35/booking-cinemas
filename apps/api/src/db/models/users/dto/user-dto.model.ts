@@ -10,7 +10,7 @@ import {
   Length,
 } from 'class-validator'
 import { Role } from '../user.model'
-import mongoose, { ObjectId } from 'mongoose'
+import mongoose, { ObjectId, Types } from 'mongoose'
 import { ITicket } from '../../tickets/ticket.model'
 import { IBooking } from '../../bookings/booking.model'
 
@@ -47,17 +47,18 @@ export class CreateUserDto {
 
   @Expose()
   @IsEnum(Role)
-  role: Role
+  @IsOptional()
+  role?: Role
 
   @Expose()
   @IsArray()
   @IsOptional()
-  tickets?: ObjectId[] | ITicket[]
+  tickets?: Types.ObjectId[] | ITicket[]
 
   @Expose()
   @IsArray()
   @IsOptional()
-  bookings?: ObjectId[] | IBooking[]
+  bookings?: Types.ObjectId[] | IBooking[]
 }
 
 export class UpdateUserDto {
@@ -105,10 +106,10 @@ export class UpdateUserDto {
   @Expose()
   @IsArray()
   @IsOptional()
-  tickets?: ObjectId[] | ITicket[]
+  tickets?: Types.ObjectId[] | ITicket[]
 
   @Expose()
   @IsArray()
   @IsOptional()
-  bookings?: ObjectId[] | IBooking[]
+  bookings?: Types.ObjectId[] | IBooking[]
 }

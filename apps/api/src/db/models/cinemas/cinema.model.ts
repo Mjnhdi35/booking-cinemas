@@ -18,7 +18,7 @@ const cinemaSchema = new mongoose.Schema<ICinema>(
     address: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Address',
-      required: true,
+      required: false,
     },
     manager: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'Manager', required: true },

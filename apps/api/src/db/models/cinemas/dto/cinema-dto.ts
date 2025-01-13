@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer'
 import { IsString, IsArray, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
-import { ObjectId } from 'mongoose'
+import { ObjectId, Types } from 'mongoose'
 import { IScreen } from '../../screens/screen.model'
 import { IAddress } from '../../address/address.model'
 import { IManager } from '../../managers/manager.model'
@@ -13,15 +13,15 @@ export class CreateCinemaDto {
 
   @Expose()
   @IsArray()
-  screen: ObjectId[] | IScreen[]
+  screen: Types.ObjectId[] | IScreen[]
 
   @Expose()
   @IsOptional()
-  address: ObjectId | IAddress
+  address: Types.ObjectId | IAddress
 
   @Expose()
   @IsArray()
-  manager: ObjectId[] | IManager[]
+  manager: Types.ObjectId[] | IManager[]
 }
 
 export class UpdateCinemaDto {
@@ -31,13 +31,13 @@ export class UpdateCinemaDto {
 
   @Expose()
   @IsArray()
-  screen: ObjectId[] | IScreen[]
+  screen: Types.ObjectId[] | IScreen[]
 
   @Expose()
   @IsOptional()
-  address: ObjectId | IAddress
+  address: Types.ObjectId | IAddress
 
   @Expose()
   @IsArray()
-  manager: ObjectId[] | IManager[]
+  manager: Types.ObjectId[] | IManager[]
 }

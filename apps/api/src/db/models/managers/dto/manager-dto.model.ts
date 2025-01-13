@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer'
 import { IsString, IsArray, IsOptional, IsEnum } from 'class-validator'
-import { ObjectId } from 'mongoose'
+import { ObjectId, Types } from 'mongoose'
 import { ICinema } from '../../cinemas/cinema.model'
 import { Role } from '../../users/user.model'
 
@@ -16,7 +16,7 @@ export class CreateManagerDto {
   @Expose()
   @IsArray()
   @IsOptional()
-  cinemas: ObjectId[] | ICinema[]
+  cinemas: Types.ObjectId[] | ICinema[]
 }
 
 export class UpdateManagerDto {
@@ -31,5 +31,5 @@ export class UpdateManagerDto {
   @Expose()
   @IsArray()
   @IsOptional()
-  cinemas: ObjectId[] | ICinema[]
+  cinemas: Types.ObjectId[] | ICinema[]
 }

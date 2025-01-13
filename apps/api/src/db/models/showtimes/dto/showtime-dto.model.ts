@@ -4,6 +4,7 @@ import { ShowtimeStatus } from '../showtime.model'
 import { IScreen } from '../../screens/screen.model'
 import { IMovie } from '../../movies/movie.model'
 import { IBooking } from '../../bookings/booking.model'
+import { Types } from 'mongoose'
 
 export class CreateShowtimeDto {
   @Expose()
@@ -15,14 +16,14 @@ export class CreateShowtimeDto {
   status: ShowtimeStatus
 
   @Expose()
-  screen: string | IScreen
+  screen: Types.ObjectId | IScreen
 
   @Expose()
-  movie: string | IMovie
+  movie: Types.ObjectId | IMovie
 
   @Expose()
   @IsOptional()
-  bookings?: string[] | IBooking[]
+  bookings?: Types.ObjectId[] | IBooking[]
 }
 
 export class UpdateShowtimeDto {
@@ -38,13 +39,13 @@ export class UpdateShowtimeDto {
 
   @Expose()
   @IsOptional()
-  screen?: string | IScreen
+  screen?: Types.ObjectId | IScreen
 
   @Expose()
   @IsOptional()
-  movie?: string | IMovie
+  movie?: Types.ObjectId | IMovie
 
   @Expose()
   @IsOptional()
-  bookings?: string[] | IBooking[]
+  bookings?: Types.ObjectId[] | IBooking[]
 }

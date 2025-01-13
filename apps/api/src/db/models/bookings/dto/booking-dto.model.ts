@@ -5,55 +5,56 @@ import { IShowtime } from '../../showtimes/showtime.model'
 import { IScreen } from '../../screens/screen.model'
 import { ITicket } from '../../tickets/ticket.model'
 import { ISeat } from '../../seats/seat.model'
+import { Types } from 'mongoose'
 
 export class CreateBookingDto {
   @Expose()
-  user: string | IUser
+  user: Types.ObjectId | IUser
 
   @Expose()
-  showtime: string | IShowtime
+  showtime: Types.ObjectId | IShowtime
 
   @Expose()
-  screen: string | IScreen
+  screen: Types.ObjectId | IScreen
 
   @Expose()
-  ticket: string | ITicket
+  ticket: Types.ObjectId | ITicket
 
   @Expose()
-  row: string | ISeat
+  row: Types.ObjectId | ISeat
 
   @Expose()
-  column: string | ISeat
+  column: Types.ObjectId | ISeat
 }
 
 export class UpdateBookingDto {
   @Expose()
   @IsOptional()
   @IsString()
-  user?: string | IUser
+  user?: Types.ObjectId | IUser
 
   @Expose()
   @IsOptional()
   @IsString()
-  showtime?: string | IShowtime
+  showtime?: Types.ObjectId | IShowtime
 
   @Expose()
   @IsOptional()
   @IsString()
-  screen?: string | IScreen
+  screen?: Types.ObjectId | IScreen
 
   @Expose()
   @IsOptional()
   @IsString()
-  ticket?: string | ITicket
+  ticket?: Types.ObjectId | ITicket
 
   @Expose()
   @IsOptional()
   @IsString()
-  row?: string | ISeat
+  row?: Types.ObjectId | ISeat
 
   @Expose()
   @IsOptional()
   @IsString()
-  column?: string | ISeat
+  column?: Types.ObjectId | ISeat
 }

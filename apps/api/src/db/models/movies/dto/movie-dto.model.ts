@@ -9,7 +9,7 @@ import {
 import { Genre } from '../movie.model'
 import { Expose } from 'class-transformer'
 import { IShowtime } from '../../showtimes/showtime.model'
-import { ObjectId } from 'mongoose'
+import { ObjectId, Types } from 'mongoose'
 
 export class CreateMovieDto {
   @Expose()
@@ -41,7 +41,7 @@ export class CreateMovieDto {
   @Expose()
   @IsArray()
   @IsOptional()
-  showtimes: ObjectId[] | IShowtime[]
+  showtimes: Types.ObjectId[] | IShowtime[]
 }
 
 export class UpdateMovieDto {
@@ -74,5 +74,5 @@ export class UpdateMovieDto {
   @Expose()
   @IsArray()
   @IsOptional()
-  showtimes: ObjectId[] | IShowtime[]
+  showtimes: Types.ObjectId[] | IShowtime[]
 }

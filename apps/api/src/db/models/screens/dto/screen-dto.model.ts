@@ -7,7 +7,7 @@ import {
   IsString,
 } from 'class-validator'
 import { AudioSystem, ScreenType } from '../screen.model'
-import { ObjectId } from 'mongoose'
+import { ObjectId, Types } from 'mongoose'
 import { ISeat } from '../../seats/seat.model'
 import { IShowtime } from '../../showtimes/showtime.model'
 import { ICinema } from '../../cinemas/cinema.model'
@@ -32,16 +32,16 @@ export class CreateScreenDto {
   @Expose()
   @IsOptional()
   @IsArray()
-  seats: ObjectId[] | ISeat[]
+  seats: Types.ObjectId[] | ISeat[]
 
   @Expose()
   @IsOptional()
   @IsArray()
-  showtimes: ObjectId[] | IShowtime[]
+  showtimes: Types.ObjectId[] | IShowtime[]
 
   @Expose()
   @IsOptional()
-  cinema: ObjectId | ICinema
+  cinema: Types.ObjectId | ICinema
 }
 
 export class UpdateScreenDto {
@@ -64,14 +64,14 @@ export class UpdateScreenDto {
   @Expose()
   @IsOptional()
   @IsArray()
-  seats: ObjectId[] | ISeat[]
+  seats: Types.ObjectId[] | ISeat[]
 
   @Expose()
   @IsOptional()
   @IsArray()
-  showtimes: ObjectId[] | IShowtime[]
+  showtimes: Types.ObjectId[] | IShowtime[]
 
   @Expose()
   @IsOptional()
-  cinema: ObjectId | ICinema
+  cinema: Types.ObjectId | ICinema
 }

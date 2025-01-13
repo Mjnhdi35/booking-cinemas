@@ -2,6 +2,7 @@ import { Expose } from 'class-transformer'
 import { IsString, IsOptional } from 'class-validator'
 import { IUser } from '../../users/user.model'
 import { IBooking } from '../../bookings/booking.model'
+import { Types } from 'mongoose'
 
 export class CreateTicketDto {
   @Expose()
@@ -10,11 +11,11 @@ export class CreateTicketDto {
 
   @Expose()
   @IsOptional()
-  user: string | IUser
+  user: Types.ObjectId | IUser
 
   @Expose()
   @IsOptional()
-  bookings: string[] | IBooking[]
+  bookings: Types.ObjectId[] | IBooking[]
 }
 
 export class UpdateTicketDto {
@@ -25,9 +26,9 @@ export class UpdateTicketDto {
 
   @Expose()
   @IsOptional()
-  user?: string | IUser
+  user?: Types.ObjectId | IUser
 
   @Expose()
   @IsOptional()
-  bookings?: string[] | IBooking[]
+  bookings?: Types.ObjectId[] | IBooking[]
 }

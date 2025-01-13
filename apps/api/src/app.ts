@@ -16,8 +16,16 @@ import cors from 'cors'
 import { buildSchema } from 'type-graphql'
 import { ApolloServer, BaseContext } from '@apollo/server'
 import { UserController } from './controllers/users/user.controller'
-import { ManagerController } from './controllers/managers/manager.controller'
+import { AddressController } from './controllers/address/address.controller'
+import { AdminController } from './controllers/admins/admin.controller'
+import { BookingController } from './controllers/bookings/booking.controller'
 import { CinemaController } from './controllers/cinemas/cinemas.controller'
+import { ManagerController } from './controllers/managers/manager.controller'
+import { MovieController } from './controllers/movies/movie.controller'
+import { ScreenController } from './controllers/screens/screen.controller'
+import { SeatController } from './controllers/seats/seat.controller'
+import { ShowtimeController } from './controllers/showtimes/showtime.controller'
+import { TicketController } from './controllers/tickets/ticket.controller'
 
 dotenv.config()
 
@@ -25,8 +33,16 @@ const app = new AppManager({
   controllers: [
     UserController,
     AuthController,
-    ManagerController,
+    AddressController,
+    AdminController,
+    BookingController,
     CinemaController,
+    ManagerController,
+    MovieController,
+    ScreenController,
+    SeatController,
+    ShowtimeController,
+    TicketController,
   ],
   prefix: ['api'],
   guards: [AuthGuard],

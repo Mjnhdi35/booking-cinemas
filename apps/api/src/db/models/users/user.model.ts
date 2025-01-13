@@ -58,6 +58,7 @@ const userSchema = new mongoose.Schema<IUser>(
       type: String,
       enum: Object.values(Role),
       default: Role.USER,
+      required: false,
     },
     tickets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ticket' }],
     bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking' }],
