@@ -49,20 +49,20 @@ const screenSchema = new mongoose.Schema<IScreen>(
     cinema: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Cinema',
-      required: true,
+      required: false,
     },
     seats: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Seat',
-        required: true,
+        required: false,
       },
     ],
     showtimes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Showtime',
-        required: true,
+        required: false,
       },
     ],
   },

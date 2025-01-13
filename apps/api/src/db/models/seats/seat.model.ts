@@ -6,7 +6,7 @@ export interface ISeat extends Document {
   row: number
   column: number
   screen: mongoose.Types.ObjectId | IScreen
-  bookings: mongoose.Types.ObjectId[] | IBooking[]
+  bookings?: mongoose.Types.ObjectId[] | IBooking[]
 }
 const seatSchema = new mongoose.Schema<ISeat>(
   {
@@ -15,6 +15,7 @@ const seatSchema = new mongoose.Schema<ISeat>(
     screen: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Screen',
+      required: true,
     },
     bookings: [
       { type: mongoose.Schema.Types.ObjectId, ref: 'Booking', required: true },

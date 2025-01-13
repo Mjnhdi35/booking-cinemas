@@ -27,17 +27,19 @@ export class CreateCinemaDto {
 export class UpdateCinemaDto {
   @Expose()
   @IsString()
-  name: string
+  @IsOptional()
+  name?: string
 
   @Expose()
   @IsArray()
-  screen: Types.ObjectId[] | IScreen[]
+  @IsOptional()
+  screen?: Types.ObjectId[] | IScreen[]
 
   @Expose()
   @IsOptional()
-  address: Types.ObjectId | IAddress
+  address?: Types.ObjectId | IAddress
 
   @Expose()
   @IsArray()
-  manager: Types.ObjectId[] | IManager[]
+  manager?: Types.ObjectId[] | IManager[]
 }

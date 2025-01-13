@@ -47,19 +47,23 @@ export class CreateMovieDto {
 export class UpdateMovieDto {
   @Expose()
   @IsString()
-  title: string
+  @IsOptional()
+  title?: string
 
   @Expose()
   @IsString()
-  director: string
+  @IsOptional()
+  director?: string
 
   @Expose()
   @IsEnum(Genre)
-  genre: Genre
+  @IsOptional()
+  genre?: Genre
 
   @Expose()
   @IsNumber()
-  duration: number
+  @IsOptional()
+  duration?: number
 
   @Expose()
   @IsOptional()
@@ -74,5 +78,5 @@ export class UpdateMovieDto {
   @Expose()
   @IsArray()
   @IsOptional()
-  showtimes: Types.ObjectId[] | IShowtime[]
+  showtimes?: Types.ObjectId[] | IShowtime[]
 }

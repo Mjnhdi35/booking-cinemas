@@ -6,7 +6,7 @@ export interface IManager extends Document {
   name: string
   role: Role
   password: string
-  cinemas: mongoose.Types.ObjectId[] | ICinema[]
+  cinemas?: mongoose.Types.ObjectId[] | ICinema[]
 }
 
 const managerSchema = new mongoose.Schema<IManager>(
@@ -16,7 +16,7 @@ const managerSchema = new mongoose.Schema<IManager>(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Cinema',
-        required: true,
+        required: false,
       },
     ],
     password: {

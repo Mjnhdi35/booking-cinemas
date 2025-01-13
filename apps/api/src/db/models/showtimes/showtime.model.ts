@@ -41,7 +41,7 @@ const showtimeSchema = new mongoose.Schema<IShowtime>(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Booking',
-        required: true,
+        required: false,
       },
     ],
   },
