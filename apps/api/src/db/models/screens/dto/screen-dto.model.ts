@@ -32,46 +32,50 @@ export class CreateScreenDto {
   @Expose()
   @IsOptional()
   @IsArray()
-  seats: Types.ObjectId[] | ISeat[]
+  seats?: Types.ObjectId[] | ISeat[]
 
   @Expose()
   @IsOptional()
   @IsArray()
-  showtimes: Types.ObjectId[] | IShowtime[]
+  showtimes?: Types.ObjectId[] | IShowtime[]
 
   @Expose()
   @IsOptional()
-  cinema: Types.ObjectId | ICinema
+  cinema?: Types.ObjectId | ICinema
 }
 
 export class UpdateScreenDto {
   @Expose()
   @IsNumber()
-  price: number
+  @IsOptional()
+  price?: number
 
   @Expose()
   @IsEnum(ScreenType)
-  screenType: ScreenType
+  @IsOptional()
+  screenType?: ScreenType
 
   @Expose()
   @IsEnum(AudioSystem)
-  audioSystem: AudioSystem
+  @IsOptional()
+  audioSystem?: AudioSystem
 
   @Expose()
   @IsNumber()
-  number: number
+  @IsOptional()
+  number?: number
 
   @Expose()
   @IsOptional()
   @IsArray()
-  seats: Types.ObjectId[] | ISeat[]
+  seats?: Types.ObjectId[] | ISeat[]
 
   @Expose()
   @IsOptional()
   @IsArray()
-  showtimes: Types.ObjectId[] | IShowtime[]
+  showtimes?: Types.ObjectId[] | IShowtime[]
 
   @Expose()
   @IsOptional()
-  cinema: Types.ObjectId | ICinema
+  cinema?: Types.ObjectId | ICinema
 }

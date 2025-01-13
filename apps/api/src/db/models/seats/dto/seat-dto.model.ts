@@ -21,7 +21,6 @@ export class CreateSeatDto {
 
   @Expose()
   @IsArray()
-  @IsOptional()
   bookings: Types.ObjectId[] | IBooking[]
 
   @Expose()
@@ -31,17 +30,20 @@ export class CreateSeatDto {
 export class UpdateSeatDto {
   @Expose()
   @IsNumber()
-  row: number
+  @IsOptional()
+  row?: number
 
   @Expose()
   @IsNumber()
-  column: number
+  @IsOptional()
+  column?: number
 
   @Expose()
   @IsArray()
   @IsOptional()
-  bookings: Types.ObjectId[] | IBooking[]
+  bookings?: Types.ObjectId[] | IBooking[]
 
   @Expose()
-  screen: Types.ObjectId | IScreen
+  @IsOptional()
+  screen?: Types.ObjectId | IScreen
 }

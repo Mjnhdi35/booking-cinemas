@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer'
-import { IsString } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 import { Role } from '../../users/user.model'
 
 export class CreateAdminDto {
@@ -9,13 +9,23 @@ export class CreateAdminDto {
 
   @Expose()
   role: Role = Role.ADMIN
+
+  @Expose()
+  @IsString()
+  password: string
 }
 
 export class UpdateAdminDto {
   @Expose()
   @IsString()
-  name: string
+  @IsOptional()
+  name?: string
 
   @Expose()
   role: Role = Role.ADMIN
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  password?: string
 }

@@ -14,22 +14,33 @@ export class CreateManagerDto {
   role: Role
 
   @Expose()
+  @IsString()
+  password: string
+
+  @Expose()
   @IsArray()
   @IsOptional()
-  cinemas: Types.ObjectId[] | ICinema[]
+  cinemas?: Types.ObjectId[] | ICinema[]
 }
 
 export class UpdateManagerDto {
   @Expose()
   @IsString()
-  name: string
+  @IsOptional()
+  name?: string
 
   @Expose()
   @IsEnum(Role)
-  role: Role
+  @IsOptional()
+  role?: Role
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  password?: string
 
   @Expose()
   @IsArray()
   @IsOptional()
-  cinemas: Types.ObjectId[] | ICinema[]
+  cinemas?: Types.ObjectId[] | ICinema[]
 }
