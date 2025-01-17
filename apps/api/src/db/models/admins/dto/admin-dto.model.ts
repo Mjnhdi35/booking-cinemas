@@ -12,6 +12,10 @@ export class CreateAdminDto {
 
   @Expose()
   @IsString()
+  email: string
+
+  @Expose()
+  @IsString()
   password: string
 }
 
@@ -23,6 +27,11 @@ export class UpdateAdminDto {
 
   @Expose()
   role: Role = Role.ADMIN
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  email?: string
 
   @Expose()
   @IsString()

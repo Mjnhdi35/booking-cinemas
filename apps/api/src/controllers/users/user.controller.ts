@@ -22,7 +22,8 @@ export class UserController {
   // @Protected()
   async create(@Body() body: CreateUserDto, @Req() req: Request) {
     try {
-      const user = await this.userService.create(body, req.user)
+      const user = await this.userService.create(body)
+
       return {
         status: 'success',
         message: 'User created successfully',
@@ -35,7 +36,7 @@ export class UserController {
 
   // Route to get all users
   @Get()
-  // @Protected() // Uncomment if authentication is required
+  // @Protected()
   async find(@Req() req: Request) {
     try {
       const users = await this.userService.find()

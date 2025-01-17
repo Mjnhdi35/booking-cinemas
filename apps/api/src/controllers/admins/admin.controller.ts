@@ -5,7 +5,8 @@ import {
   Patch,
   Post,
 } from '../../core/decorators/method.decorator'
-import { Body, Param } from '../../core/decorators/param.decorator'
+import { Body, Param, Req } from '../../core/decorators/param.decorator'
+import { Request } from '../../core/utils/types'
 import {
   CreateAdminDto,
   UpdateAdminDto,
@@ -17,9 +18,10 @@ export class AdminController {
   constructor(private adminService: AdminService) {}
 
   @Post()
-  async create(@Body() body: any, createAdminDto: CreateAdminDto) {
+  async create(@Body() body: CreateAdminDto, @Req() req: Request) {
     try {
       const admin = await this.adminService.create(body)
+
       return {
         status: 'success',
         message: 'Admin created successfully',
@@ -31,7 +33,7 @@ export class AdminController {
   }
 
   @Get()
-  async find() {
+  async find(@Req() req: Request) {
     try {
       const admin = await this.adminService.find()
       return {
@@ -47,6 +49,8 @@ export class AdminController {
   async findOne(@Param('id') id: string) {
     try {
       const admin = await this.adminService.findOne(id)
+      console.log('admin ne:', admin)
+
       return {
         status: 'success',
         data: admin,
@@ -62,7 +66,7 @@ export class AdminController {
     @Body() updateAdminDto: UpdateAdminDto,
   ) {
     try {
-      await this.adminService.update(id)
+      await this.adminService.update(id, updateAdminDto)
       return {
         status: 'success',
         message: 'Admin updated successfully',

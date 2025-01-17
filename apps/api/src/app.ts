@@ -2,7 +2,6 @@ import 'reflect-metadata'
 import { AppManager } from './core/app.manager'
 import { connectDb } from './db/connect.db'
 import { AuthGuard } from './guards/auth.gaurd'
-import { AuthController } from './controllers/auth.controller'
 import { BaseResponseFormatter } from './interceptors/response-formatter.interceptor'
 import { BodyValidateInterceptor } from './interceptors/body-validate.interceptor'
 import { ValidationPipe } from './pipes/validation.pipe'
@@ -26,18 +25,26 @@ import { ScreenController } from './controllers/screens/screen.controller'
 import { SeatController } from './controllers/seats/seat.controller'
 import { ShowtimeController } from './controllers/showtimes/showtime.controller'
 import { TicketController } from './controllers/tickets/ticket.controller'
+import { UserAuthController } from './controllers/users/user-auth.controller'
+import { AdminAuthController } from './controllers/admins/admin-auth.controller'
+import { ManagerAuthController } from './controllers/managers/manager-auth.controller'
 
 dotenv.config()
 
 const app = new AppManager({
   controllers: [
     UserController,
-    AuthController,
-    AddressController,
+    UserAuthController,
+
     AdminController,
+    AdminAuthController,
+
+    ManagerController,
+    ManagerAuthController,
+
+    AddressController,
     BookingController,
     CinemaController,
-    ManagerController,
     MovieController,
     ScreenController,
     SeatController,

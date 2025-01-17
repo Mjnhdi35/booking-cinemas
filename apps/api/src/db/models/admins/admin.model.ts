@@ -5,6 +5,7 @@ export interface IAdmin extends Document {
   name: string
   role: Role
   password: string
+  email: string
 }
 
 const adminSchema = new mongoose.Schema<IAdmin>(
@@ -18,6 +19,13 @@ const adminSchema = new mongoose.Schema<IAdmin>(
     password: {
       type: String,
       required: [true, 'Password is required'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+      trim: true,
+      match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address'],
     },
   },
   { timestamps: true },

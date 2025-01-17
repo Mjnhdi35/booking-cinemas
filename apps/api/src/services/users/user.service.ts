@@ -11,7 +11,7 @@ export class UserService {
   constructor(@Inject(User) private userModel: typeof User) {}
 
   // Create a new user
-  async create(body: any, currentUser: any) {
+  async create(body: any) {
     const { password } = body
     if (!password) {
       throw new BadRequestException('Password is required')
@@ -22,9 +22,8 @@ export class UserService {
 
     // Set the role based on the current user's role (admin/manager) or default to user
     const role =
-      currentUser &&
-      (currentUser.role === Role.ADMIN || currentUser.role === Role.MANAGER)
-        ? body.role || currentUser.role
+      body && (body.role === Role.ADMIN || body.role === Role.MANAGER)
+        ? body.role || body.role
         : Role.USER
 
     return await this.userModel.create({
