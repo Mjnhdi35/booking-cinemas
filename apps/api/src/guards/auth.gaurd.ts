@@ -35,11 +35,13 @@ export class AuthGuard extends AppGruad {
       { session: false },
       (error: any, payload: JwtPayload, info: any) => {
         if (error || info) {
+          console.log('bao ve nua di')
           throw new UnAuthorizedException()
         }
         return true
       },
     )(req, res, next)
+
     return true
   }
 }

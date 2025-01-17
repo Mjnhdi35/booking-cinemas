@@ -27,7 +27,7 @@ export class AdminAuthService {
       throw new BadRequestException('Email hoặc password không đúng!')
     }
 
-    const { role, password: userPassword, ...payload } = admin
+    const { password: userPassword, ...payload } = admin
     const access_token = jsonwebtoken.sign(
       payload,
       process.env.JWT_SECRET_KEY!,
