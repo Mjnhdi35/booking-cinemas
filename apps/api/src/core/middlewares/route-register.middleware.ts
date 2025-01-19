@@ -20,7 +20,7 @@ export class RouteRegisterMiddleware implements AppMiddleware {
     }
 
     req.context = context
-    console.log(req.url)
+    // console.log(req.url)
     //xem cac route
     next()
   }

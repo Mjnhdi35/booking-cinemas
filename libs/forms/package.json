@@ -1,0 +1,14 @@
+{
+  "name": "@booking-tickets-cinema/forms",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "tsc": "tsc"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.10.0",
+    "react-hook-form": "^7.54.2",
+    "zod": "^3.24.1"
+  }
+}
