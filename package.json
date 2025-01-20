@@ -3,17 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
-  "workspaces": {
-    "packages": [
-      "apps/*",
-      "libs/*"
-    ]
-  },
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
   "devDependencies": {
-    "prettier": "^3.4.2",
-    "typescript": "^5.7.2",
+    "husky": "^8.0.0",
     "nx": "20.3.0",
-    "husky": "^8.0.0"
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2"
   },
   "scripts": {
     "format": "prettier  \"{apps,libs}/**/*.{ts,tsx,js,json}\" --ignore-path .gitignore",
@@ -24,6 +22,5 @@
     "build": "yarn nx run-many -t build",
     "validate": "yarn format:write && yarn tsc && yarn lint && yarn build",
     "prepare": "husky install"
-  },
-  "dependencies": {}
+  }
 }

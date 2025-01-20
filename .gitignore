@@ -10,3 +10,5 @@ dist
 package-lock.json
 .next
 yarn.lock
+.yarn
+.yarnrc.yml
