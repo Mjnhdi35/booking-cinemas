@@ -1,40 +1,42 @@
 import { Expose } from 'class-transformer'
-import { IsOptional, IsString } from 'class-validator'
-import { Role } from '../../users/user.model'
+import {
+  IsEmail,
+  IsString,
+  IsNotEmpty,
+  IsArray,
+  IsMongoId,
+  IsOptional,
+} from 'class-validator'
+import { Types } from 'mongoose'
 
 export class CreateAdminDto {
   @Expose()
-  @IsString()
-  name: string
-
-  @Expose()
-  role: Role = Role.ADMIN
-
-  @Expose()
-  @IsString()
+  @IsEmail()
   email: string
 
   @Expose()
   @IsString()
+  @IsNotEmpty()
   password: string
+
+  @Expose()
+  @IsArray()
+  @IsMongoId({ each: true })
+  @IsOptional()
+  addedMovies?: string[]
 }
 
 export class UpdateAdminDto {
   @Expose()
-  @IsString()
-  @IsOptional()
-  name?: string
-
-  @Expose()
-  role: Role = Role.ADMIN
-
-  @Expose()
-  @IsString()
-  @IsOptional()
+  @IsEmail()
   email?: string
 
   @Expose()
   @IsString()
-  @IsOptional()
   password?: string
+
+  @Expose()
+  @IsArray()
+  @IsMongoId({ each: true })
+  addedMovies?: string[]
 }

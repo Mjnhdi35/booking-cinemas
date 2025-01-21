@@ -5,28 +5,28 @@ import {
   Patch,
   Post,
 } from '../../core/decorators/method.decorator'
-import { Body, Param, Req } from '../../core/decorators/param.decorator'
+import { Body, Param, Req, Res } from '../../core/decorators/param.decorator'
 import {
   CreateUserDto,
   UpdateUserDto,
 } from '../../db/models/users/dto/user-dto.model'
+import { Protected } from '../../decorators/protected.decorator'
+
+import { Request, Response } from 'express'
 import { UserService } from '../../services/users/user.service'
-import { Request } from 'express'
 
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  // Route to create a new user
   @Post()
-  // @Protected()
   async create(@Body() body: CreateUserDto, @Req() req: Request) {
     try {
       const user = await this.userService.create(body)
 
       return {
         status: 'success',
-        message: 'User created successfully',
+        message: 'Người Dùng Đã Được Tạo Thành Công',
         data: user,
       }
     } catch (error: any) {
@@ -34,10 +34,9 @@ export class UserController {
     }
   }
 
-  // Route to get all users
   @Get()
   // @Protected()
-  async find(@Req() req: Request) {
+  async find(@Req() req: Request, @Res() res: Response) {
     try {
       const users = await this.userService.find()
       return {
@@ -49,10 +48,8 @@ export class UserController {
     }
   }
 
-  // Route to get a single user by ID
   @Get(':id')
-  // @Protected() // Uncomment if authentication is required
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string, @Res() res: Response) {
     try {
       const user = await this.userService.findOne(id)
       return {
@@ -64,29 +61,28 @@ export class UserController {
     }
   }
 
-  // Route to update user by ID
   @Patch(':id')
+  @Protected()
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     try {
       await this.userService.update(id, updateUserDto)
       return {
         status: 'success',
-        message: 'User updated successfully',
+        message: 'Người Dùng Đã Cập Nhập Thành Công',
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
     }
   }
 
-  // Route to delete user by ID
   @Delete(':id')
-  // @Protected() // Uncomment if authentication is required
-  async delete(@Param('id') id: string) {
+  @Protected()
+  async delete(@Param('id') id: string, @Res() res: Response) {
     try {
       await this.userService.delete(id)
       return {
         status: 'success',
-        message: 'User deleted successfully',
+        message: 'Người Dùng Đã Xóa Thành Công',
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }

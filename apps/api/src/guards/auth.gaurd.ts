@@ -16,7 +16,7 @@ export class AuthGuard extends AppGruad {
   ) {
     super()
   }
-  async canActive(context: AppContext): Promise<boolean> {
+  canActive(context: AppContext): boolean {
     const passport = this.passportService.passport
     const controllerClass = context.getClass()
     const handler = context.getHandler()
@@ -35,7 +35,6 @@ export class AuthGuard extends AppGruad {
       { session: false },
       (error: any, payload: JwtPayload, info: any) => {
         if (error || info) {
-          console.log('bao ve nua di')
           throw new UnAuthorizedException()
         }
         return true

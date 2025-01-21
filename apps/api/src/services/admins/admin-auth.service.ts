@@ -1,33 +1,34 @@
 import jsonwebtoken from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { Injectable } from '../../core/decorators/injectable.decorator'
-import { Admin } from '../../db/models/admins/admin.model'
+
 import { Inject } from '../../core/decorators/param.decorator'
 import { BadRequestException } from '../../core/base/error.base'
+import Admin from '../../db/models/admins/admin.model'
 
 @Injectable()
 export class AdminAuthService {
-  constructor(@Inject(Admin) private userModel: typeof Admin) {}
+  constructor(@Inject(Admin) private adminModel: typeof Admin) {}
 
   async login(body: any) {
     const { email, password } = body
-    const admin = await this.userModel
+    const user = await this.adminModel
       .findOne({
         email: body.email,
       })
       .lean()
 
-    if (!admin) {
-      throw new BadRequestException('Email hoặc password không đúng!')
+    if (!user) {
+      throw new BadRequestException('Email hoặc Mật Khẩu không đúng!')
     }
 
-    const isPasswordValid = await bcrypt.compare(password, admin.password!)
+    const isPasswordValid = await bcrypt.compare(password, user.password!)
 
     if (!isPasswordValid) {
-      throw new BadRequestException('Email hoặc password không đúng!')
+      throw new BadRequestException('Email hoặc Mật Khẩu không đúng!')
     }
 
-    const { password: userPassword, ...payload } = admin
+    const { password: userPassword, ...payload } = user
     const access_token = jsonwebtoken.sign(
       payload,
       process.env.JWT_SECRET_KEY!,

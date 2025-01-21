@@ -1,60 +1,70 @@
 import { Expose } from 'class-transformer'
-import { IsOptional, IsString } from 'class-validator'
-import { IUser } from '../../users/user.model'
-import { IShowtime } from '../../showtimes/showtime.model'
-import { IScreen } from '../../screens/screen.model'
-import { ITicket } from '../../tickets/ticket.model'
-import { ISeat } from '../../seats/seat.model'
+import {
+  IsDate,
+  IsMongoId,
+  IsNotEmpty,
+  IsNumber,
+  IsArray,
+  ArrayNotEmpty,
+  IsOptional,
+  IsDateString,
+} from 'class-validator'
 import { Types } from 'mongoose'
 
 export class CreateBookingDto {
   @Expose()
-  user: Types.ObjectId | IUser
+  @IsMongoId()
+  @IsNotEmpty()
+  movie: Types.ObjectId
 
   @Expose()
-  showtime: Types.ObjectId | IShowtime
+  @IsNotEmpty()
+  @IsDateString()
+  showtime: Date
 
   @Expose()
-  screen: Types.ObjectId | IScreen
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsNumber({}, { each: true })
+  @IsNotEmpty()
+  seatNumber: number[]
 
   @Expose()
-  ticket: Types.ObjectId | ITicket
+  @IsMongoId()
+  @IsNotEmpty()
+  user: Types.ObjectId
 
   @Expose()
-  row: Types.ObjectId | ISeat
-
-  @Expose()
-  column: Types.ObjectId | ISeat
+  @IsNumber()
+  @IsNotEmpty()
+  totalPrice: number
 }
 
 export class UpdateBookingDto {
   @Expose()
+  @IsMongoId()
   @IsOptional()
-  @IsString()
-  user?: Types.ObjectId | IUser
+  movie?: Types.ObjectId
 
   @Expose()
+  @IsDate()
   @IsOptional()
-  @IsString()
-  showtime?: Types.ObjectId | IShowtime
+  @IsDateString()
+  showtime?: Date
 
   @Expose()
+  @IsArray()
   @IsOptional()
-  @IsString()
-  screen?: Types.ObjectId | IScreen
+  @IsNumber({}, { each: true })
+  seatNumber?: number[]
 
   @Expose()
+  @IsMongoId()
   @IsOptional()
-  @IsString()
-  ticket?: Types.ObjectId | ITicket
+  user?: Types.ObjectId
 
   @Expose()
+  @IsNumber()
   @IsOptional()
-  @IsString()
-  row?: Types.ObjectId | ISeat
-
-  @Expose()
-  @IsOptional()
-  @IsString()
-  column?: Types.ObjectId | ISeat
+  totalPrice?: number
 }

@@ -1,82 +1,88 @@
-import {
-  IsArray,
-  IsDateString,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator'
-import { Genre } from '../movie.model'
 import { Expose } from 'class-transformer'
-import { IShowtime } from '../../showtimes/showtime.model'
-import { ObjectId, Types } from 'mongoose'
+import {
+  IsString,
+  IsNotEmpty,
+  IsArray,
+  IsDate,
+  IsOptional,
+  IsBoolean,
+  IsMongoId,
+  IsDateString,
+} from 'class-validator'
+import { Types } from 'mongoose'
 
 export class CreateMovieDto {
   @Expose()
   @IsString()
+  @IsNotEmpty()
   title: string
 
   @Expose()
   @IsString()
-  director: string
-
-  @Expose()
-  @IsEnum(Genre)
-  genre: Genre
-
-  @Expose()
-  @IsNumber()
-  duration: number
-
-  @Expose()
-  @IsOptional()
-  @IsDateString()
-  releaseDateString?: string
-
-  @Expose()
-  @IsOptional()
-  @IsString()
-  posterUrl?: string
+  @IsNotEmpty()
+  description: string
 
   @Expose()
   @IsArray()
-  @IsOptional()
-  showtimes: Types.ObjectId[] | IShowtime[]
+  @IsString({ each: true })
+  actors: string[]
+
+  @Expose()
+  @IsDateString()
+  releaseDate: Date
+
+  @Expose()
+  @IsString()
+  posterUrl: string
+
+  @Expose()
+  @IsBoolean()
+  featured: boolean
+
+  @Expose()
+  @IsArray()
+  @IsMongoId({ each: true })
+  bookings: Types.ObjectId[]
+
+  @Expose()
+  @IsMongoId()
+  admin: Types.ObjectId
 }
 
 export class UpdateMovieDto {
   @Expose()
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   title?: string
 
   @Expose()
   @IsString()
-  @IsOptional()
-  director?: string
+  @IsNotEmpty()
+  description?: string
 
   @Expose()
-  @IsEnum(Genre)
-  @IsOptional()
-  genre?: Genre
+  @IsArray()
+  @IsString({ each: true })
+  actors?: string[]
 
   @Expose()
-  @IsNumber()
-  @IsOptional()
-  duration?: number
-
-  @Expose()
-  @IsOptional()
   @IsDateString()
-  releaseDateString?: string
+  releaseDate?: Date
 
   @Expose()
-  @IsOptional()
   @IsString()
   posterUrl?: string
 
   @Expose()
+  @IsBoolean()
+  featured?: boolean
+
+  @Expose()
   @IsArray()
-  @IsOptional()
-  showtimes?: Types.ObjectId[] | IShowtime[]
+  @IsMongoId({ each: true })
+  bookings?: Types.ObjectId[]
+
+  @Expose()
+  @IsMongoId()
+  admin?: Types.ObjectId
 }

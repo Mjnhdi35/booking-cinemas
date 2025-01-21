@@ -5,13 +5,14 @@ import {
   Patch,
   Post,
 } from '../../core/decorators/method.decorator'
-import { Body, Param, Req } from '../../core/decorators/param.decorator'
-import { Request } from '../../core/utils/types'
+import { Body, Param, Req, Res } from '../../core/decorators/param.decorator'
 import {
   CreateAdminDto,
   UpdateAdminDto,
 } from '../../db/models/admins/dto/admin-dto.model'
+import { Protected } from '../../decorators/protected.decorator'
 import { AdminService } from '../../services/admins/admin.service'
+import { Request, Response } from 'express'
 
 @Controller('admins')
 export class AdminController {
@@ -24,7 +25,7 @@ export class AdminController {
 
       return {
         status: 'success',
-        message: 'Admin created successfully',
+        message: 'Đã Tạo Thành Công',
         data: admin,
       }
     } catch (error: any) {
@@ -33,12 +34,13 @@ export class AdminController {
   }
 
   @Get()
-  async find(@Req() req: Request) {
+  @Protected()
+  async find(@Req() req: Request, @Res() res: Response) {
     try {
-      const admin = await this.adminService.find()
+      const admins = await this.adminService.find()
       return {
         status: 'success',
-        data: admin,
+        data: admins,
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
@@ -46,11 +48,10 @@ export class AdminController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Protected()
+  async findOne(@Param('id') id: string, @Res() res: Response) {
     try {
       const admin = await this.adminService.findOne(id)
-      console.log('admin ne:', admin)
-
       return {
         status: 'success',
         data: admin,
@@ -61,6 +62,7 @@ export class AdminController {
   }
 
   @Patch(':id')
+  @Protected()
   async update(
     @Param('id') id: string,
     @Body() updateAdminDto: UpdateAdminDto,
@@ -69,7 +71,7 @@ export class AdminController {
       await this.adminService.update(id, updateAdminDto)
       return {
         status: 'success',
-        message: 'Admin updated successfully',
+        message: 'Đã Cập Nhập Thành Công',
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
@@ -77,12 +79,13 @@ export class AdminController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {
+  @Protected()
+  async delete(@Param('id') id: string, @Res() res: Response) {
     try {
       await this.adminService.delete(id)
       return {
         status: 'success',
-        message: 'Movie deleted successfully',
+        message: 'Đã Xóa Thành Công',
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }

@@ -5,12 +5,13 @@ import {
   Patch,
   Post,
 } from '../../core/decorators/method.decorator'
-import { Body, Param, Req } from '../../core/decorators/param.decorator'
-import { Request } from '../../core/utils/types'
+import { Body, Param, Req, Res } from '../../core/decorators/param.decorator'
 import {
   CreateMovieDto,
   UpdateMovieDto,
 } from '../../db/models/movies/dto/movie-dto.model'
+import { Protected } from '../../decorators/protected.decorator'
+import { Request, Response } from 'express'
 import { MovieService } from '../../services/movies/movie.service'
 
 @Controller('movies')
@@ -18,12 +19,14 @@ export class MovieController {
   constructor(private movieService: MovieService) {}
 
   @Post()
-  async create(@Body() body: CreateMovieDto, @Req() req: Request) {
+  @Protected()
+  async create(@Body() createMovieDto: CreateMovieDto, @Req() req: Request) {
     try {
-      const movie = await this.movieService.create(body)
+      const movie = await this.movieService.create(createMovieDto)
+
       return {
         status: 'success',
-        message: 'movie created successfully',
+        message: 'Phim Đã Được Tạo Thành Công',
         data: movie,
       }
     } catch (error: any) {
@@ -32,7 +35,7 @@ export class MovieController {
   }
 
   @Get()
-  async find() {
+  async find(@Req() req: Request, @Res() res: Response) {
     try {
       const movies = await this.movieService.find()
       return {
@@ -44,8 +47,39 @@ export class MovieController {
     }
   }
 
+  @Get('featured')
+  async findFeatured(@Req() req: Request, @Res() res: Response) {
+    try {
+      const movies = await this.movieService.findFeatured()
+      return {
+        status: 'success',
+        data: movies,
+      }
+    } catch (error: any) {
+      return { status: 'error', message: error.message }
+    }
+  }
+
+  @Get('search')
+  async searchByTitle(@Req() req: Request) {
+    try {
+      const { title } = req.query
+      if (typeof title !== 'string') {
+        throw new Error('Tiêu đề tìm kiếm không hợp lệ')
+      }
+
+      const movies = await this.movieService.findByTitle(title)
+      return {
+        status: 'success',
+        data: movies,
+      }
+    } catch (error: any) {
+      return { status: 'error', message: error.message }
+    }
+  }
+
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string, @Res() res: Response) {
     try {
       const movie = await this.movieService.findOne(id)
       return {
@@ -56,28 +90,33 @@ export class MovieController {
       return { status: 'error', message: error.message }
     }
   }
+
   @Patch(':id')
+  @Protected()
   async update(
     @Param('id') id: string,
     @Body() updateMovieDto: UpdateMovieDto,
   ) {
     try {
-      await this.movieService.update(id, updateMovieDto)
+      const updatedMovie = await this.movieService.update(id, updateMovieDto)
       return {
         status: 'success',
-        message: 'Movie updated successfully',
+        message: 'Phim Đã Được Cập Nhật Thành Công',
+        data: updatedMovie,
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }
     }
   }
+
   @Delete(':id')
-  async delete(@Param('id') id: string) {
+  @Protected()
+  async delete(@Param('id') id: string, @Res() res: Response) {
     try {
       await this.movieService.delete(id)
       return {
         status: 'success',
-        message: 'Movie deleted successfully',
+        message: 'Phim Đã Được Xóa Thành Công',
       }
     } catch (error: any) {
       return { status: 'error', message: error.message }

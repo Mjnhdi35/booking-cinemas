@@ -11,7 +11,8 @@ import { PROTECTED_METADATA_KEY } from '../../utils/constants'
 import { getMetadata } from '../../core/metadata/metadata'
 import { UnAuthorizedException } from '../../core/base/error.base'
 import jsonwebtoken from 'jsonwebtoken'
-import { User } from '../../db/models/users/user.model'
+import User from '../../db/models/users/user.model'
+
 @Injectable()
 export class AuthGraphMiddleware implements MiddlewareInterface {
   constructor(@Inject(User) private userModel: typeof User) {}

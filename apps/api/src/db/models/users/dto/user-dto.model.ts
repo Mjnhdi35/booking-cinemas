@@ -1,18 +1,5 @@
 import { Expose } from 'class-transformer'
-import {
-  IsArray,
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Length,
-} from 'class-validator'
-import { Role } from '../user.model'
-import mongoose, { ObjectId, Types } from 'mongoose'
-import { ITicket } from '../../tickets/ticket.model'
-import { IBooking } from '../../bookings/booking.model'
+import { IsArray, IsMongoId, IsOptional, IsString } from 'class-validator'
 
 export class CreateUserDto {
   @Expose()
@@ -20,12 +7,7 @@ export class CreateUserDto {
   name: string
 
   @Expose()
-  @IsNumber()
-  age: number
-
-  @Expose()
   @IsString()
-  @IsEmail()
   email: string
 
   @Expose()
@@ -33,32 +15,10 @@ export class CreateUserDto {
   password: string
 
   @Expose()
-  @IsString()
-  phone: string
-
-  @Expose()
-  @IsString()
-  cccd: string
-
-  @Expose()
-  @IsString()
-  @IsOptional()
-  image?: string
-
-  @Expose()
-  @IsEnum(Role)
-  @IsOptional()
-  role?: Role
-
-  @Expose()
   @IsArray()
+  @IsMongoId({ each: true })
   @IsOptional()
-  tickets?: Types.ObjectId[] | ITicket[]
-
-  @Expose()
-  @IsArray()
-  @IsOptional()
-  bookings?: Types.ObjectId[] | IBooking[]
+  bookings?: string[]
 }
 
 export class UpdateUserDto {
@@ -68,13 +28,7 @@ export class UpdateUserDto {
   name?: string
 
   @Expose()
-  @IsNumber()
-  @IsOptional()
-  age?: number
-
-  @Expose()
   @IsString()
-  @IsEmail()
   @IsOptional()
   email?: string
 
@@ -84,32 +38,8 @@ export class UpdateUserDto {
   password?: string
 
   @Expose()
-  @IsString()
-  @IsOptional()
-  phone?: string
-
-  @Expose()
-  @IsString()
-  @IsOptional()
-  cccd?: string
-
-  @Expose()
-  @IsString()
-  @IsOptional()
-  image?: string
-
-  @Expose()
-  @IsEnum(Role)
-  @IsOptional()
-  role?: Role
-
-  @Expose()
   @IsArray()
+  @IsMongoId({ each: true })
   @IsOptional()
-  tickets?: Types.ObjectId[] | ITicket[]
-
-  @Expose()
-  @IsArray()
-  @IsOptional()
-  bookings?: Types.ObjectId[] | IBooking[]
+  bookings?: string[]
 }

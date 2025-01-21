@@ -15,19 +15,11 @@ import cors from 'cors'
 import { buildSchema } from 'type-graphql'
 import { ApolloServer, BaseContext } from '@apollo/server'
 import { UserController } from './controllers/users/user.controller'
-import { AddressController } from './controllers/address/address.controller'
-import { AdminController } from './controllers/admins/admin.controller'
-import { BookingController } from './controllers/bookings/booking.controller'
-import { CinemaController } from './controllers/cinemas/cinemas.controller'
-import { ManagerController } from './controllers/managers/manager.controller'
-import { MovieController } from './controllers/movies/movie.controller'
-import { ScreenController } from './controllers/screens/screen.controller'
-import { SeatController } from './controllers/seats/seat.controller'
-import { ShowtimeController } from './controllers/showtimes/showtime.controller'
-import { TicketController } from './controllers/tickets/ticket.controller'
 import { UserAuthController } from './controllers/users/user-auth.controller'
+import { AdminController } from './controllers/admins/admin.controller'
 import { AdminAuthController } from './controllers/admins/admin-auth.controller'
-import { ManagerAuthController } from './controllers/managers/manager-auth.controller'
+import { MovieController } from './controllers/movies/movie.controller'
+import { BookingController } from './controllers/bookings/booking.controller'
 
 dotenv.config()
 
@@ -35,35 +27,24 @@ const app = new AppManager({
   controllers: [
     UserController,
     UserAuthController,
-
     AdminController,
     AdminAuthController,
-
-    ManagerController,
-    ManagerAuthController,
-
-    AddressController,
-    BookingController,
-    CinemaController,
     MovieController,
-    ScreenController,
-    SeatController,
-    ShowtimeController,
-    TicketController,
+    BookingController,
   ],
   prefix: ['api'],
   guards: [AuthGuard],
   middlewares: [],
   interceptors: [
     {
-      forRoutes: ['/user'],
+      forRoutes: ['/users', '/admins', '/movies', '/bookings'],
       useClass: BaseResponseFormatter,
     },
     BodyValidateInterceptor,
   ],
   pipes: [
     {
-      forRoutes: ['/user'],
+      forRoutes: ['/users', '/admins', '/movies', '/bookings'],
       useClass: ValidationPipe,
     },
   ],
@@ -100,7 +81,7 @@ async function bootstrap() {
     '*',
     cors({
       origin: 'http://localhost:5173',
-      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      methods: ['GET', 'POST', 'PATCH', 'DELETE'],
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,
     }),

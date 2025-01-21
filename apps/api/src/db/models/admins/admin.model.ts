@@ -1,34 +1,36 @@
-import mongoose, { Document } from 'mongoose'
-import { Role } from '../users/user.model'
+import mongoose, { Schema, Document, Model, Types } from 'mongoose'
 
 export interface IAdmin extends Document {
-  name: string
-  role: Role
-  password: string
   email: string
+  password: string
+  addedMovies: Types.ObjectId[]
 }
 
-const adminSchema = new mongoose.Schema<IAdmin>(
+const adminSchema: Schema<IAdmin> = new Schema(
   {
-    name: { type: String, required: [true, 'Name is required'] },
-    role: {
-      type: String,
-      enum: Object.values(Role),
-      default: Role.ADMIN,
-    },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-    },
     email: {
       type: String,
       required: [true, 'Email is required'],
       unique: true,
-      trim: true,
-      match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address'],
+      match: [/\S+@\S+\.\S+/, 'Please provide a valid email'],
     },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+      minlength: 6,
+    },
+    addedMovies: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Movie',
+      },
+    ],
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 )
-const Admin = mongoose.model<IAdmin>('Admin', adminSchema)
-export { Admin }
+
+const Admin: Model<IAdmin> = mongoose.model<IAdmin>('Admin', adminSchema)
+
+export default Admin

@@ -1,53 +1,53 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose, { Schema, Document, Types, Model } from 'mongoose'
+import { IMovie } from '../movies/movie.model'
 import { IUser } from '../users/user.model'
-import { IShowtime } from '../showtimes/showtime.model'
-import { IScreen } from '../screens/screen.model'
-import { ITicket } from '../tickets/ticket.model'
-import { ISeat } from '../seats/seat.model'
 
 export interface IBooking extends Document {
-  user: mongoose.Types.ObjectId | IUser
-  showtime: mongoose.Types.ObjectId | IShowtime
-  screen: mongoose.Types.ObjectId | IScreen
-  ticket: mongoose.Types.ObjectId | ITicket
-  row: mongoose.Types.ObjectId | ISeat
-  column: mongoose.Types.ObjectId | ISeat
+  movie: Types.ObjectId | IMovie
+  showtime: Date
+  seatNumber: number[]
+  user: Types.ObjectId | IUser
+  totalPrice: number
 }
 
-const bookingSchema = new mongoose.Schema<IBooking>(
+const bookingSchema: Schema<IBooking> = new Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
+    movie: {
+      type: Schema.Types.ObjectId,
+      ref: 'Movie',
+      required: [true, 'Movie is required'],
     },
     showtime: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Showtime',
-      required: true,
+      type: Date,
+      required: [true, 'Showtime is required'],
     },
-    screen: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Screen',
-      required: true,
+    seatNumber: {
+      type: [Number],
+      required: [true, 'Seat number is required'],
+      validate: {
+        validator: (v: number[]) =>
+          Array.isArray(v) && v.every((seat) => typeof seat === 'number'),
+        message: 'Seat numbers should be an array of numbers',
+      },
     },
-    ticket: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Ticket',
-      required: true,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'User is required'],
     },
-    row: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Seat',
-      required: true,
-    },
-    column: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Seat',
-      required: true,
+    totalPrice: {
+      type: Number,
+      required: [true, 'Total price is required'],
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 )
-const Booking = mongoose.model<IBooking>('Booking', bookingSchema)
-export { Booking }
+
+const Booking: Model<IBooking> = mongoose.model<IBooking>(
+  'Booking',
+  bookingSchema,
+)
+
+export default Booking
