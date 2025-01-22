@@ -45,7 +45,7 @@ export class MovieService {
     try {
       const movies = await this.movieModel
         .find()
-        .populate('admin', 'username email')
+        .populate('admin', 'username')
         .populate('bookings')
         .exec()
       return movies
