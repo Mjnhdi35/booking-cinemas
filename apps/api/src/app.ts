@@ -5,22 +5,19 @@ import { AuthGuard } from './guards/auth.gaurd'
 import { BaseResponseFormatter } from './interceptors/response-formatter.interceptor'
 import { BodyValidateInterceptor } from './interceptors/body-validate.interceptor'
 import { ValidationPipe } from './pipes/validation.pipe'
-import { UserResolver } from './graph/resolvers/user.resolver'
-import { AuthGraphMiddleware } from './graph/middlewares/auth.middleware'
 import express from 'express'
-import { expressMiddleware } from '@apollo/server/express4'
 import dotenv from 'dotenv'
 import path from 'path'
 import cors from 'cors'
-import { buildSchema } from 'type-graphql'
-import { ApolloServer, BaseContext } from '@apollo/server'
 import { UserController } from './controllers/users/user.controller'
 import { UserAuthController } from './controllers/users/user-auth.controller'
 import { AdminController } from './controllers/admins/admin.controller'
 import { AdminAuthController } from './controllers/admins/admin-auth.controller'
 import { MovieController } from './controllers/movies/movie.controller'
 import { BookingController } from './controllers/bookings/booking.controller'
-
+import { UploadController } from './controllers/uploads/upload.controller'
+import { FileUploadMiddleware } from './middlewares/file-upload.middleware'
+import { v2 as cloudinary } from 'cloudinary'
 dotenv.config()
 
 const app = new AppManager({
@@ -31,10 +28,16 @@ const app = new AppManager({
     AdminAuthController,
     MovieController,
     BookingController,
+    UploadController,
   ],
   prefix: ['api'],
   guards: [AuthGuard],
-  middlewares: [],
+  middlewares: [
+    {
+      forRoutes: ['/upload'],
+      useClass: FileUploadMiddleware,
+    },
+  ],
   interceptors: [
     {
       forRoutes: ['/users', '/admins', '/movies', '/bookings'],
@@ -52,31 +55,11 @@ const app = new AppManager({
 
 async function bootstrap() {
   await connectDb()
-
-  const container = app.getContainer()
-  const resolvers = [UserResolver]
-  const middlewares = [AuthGraphMiddleware]
-
-  for (const resolver of resolvers) {
-    app.diRegister(resolver)
-  }
-
-  for (const middleware of middlewares) {
-    app.diRegister(middleware)
-  }
-
-  const schema = await buildSchema({
-    resolvers: resolvers as any,
-    globalMiddlewares: middlewares,
-    container,
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
   })
-
-  const server = new ApolloServer<BaseContext>({
-    schema,
-    introspection: true,
-  })
-
-  await server.start()
   app.use(
     '*',
     cors({
@@ -88,12 +71,6 @@ async function bootstrap() {
   )
 
   app.use('/', express.json())
-  app.use(
-    '/graphql',
-    expressMiddleware(server, {
-      context: async ({ req }) => ({ req }),
-    }) as unknown as express.Handler,
-  )
 
   app.init()
 
