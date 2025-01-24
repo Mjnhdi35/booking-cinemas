@@ -63,3 +63,32 @@ export const sendAdminLoginRequest = async (data: {
     }
   }
 }
+
+export const getMoviesDetails = async (_id: string) => {
+  const res = await axios.get(`/movies/${_id}`).catch((err) => console.log(err))
+
+  if (res?.data.data.status !== 'success') return res
+  const resData = res.data.data.data
+  return resData
+}
+
+export const newBooking = async (data: {
+  movie: string
+  showtime: string
+  seatNumber: number[]
+  user: string
+}) => {
+  try {
+    const response = await axios.post('/bookings', {
+      movie: data.movie, // Đảm bảo movieId là chuỗi hợp lệ
+      showtime: data.showtime,
+      seatNumber: data.seatNumber, // Mảng số ghế
+      user: data.user, // User ID
+    })
+    console.log('Booking created successfully:', response.data)
+    return response.data
+  } catch (error) {
+    console.error('Error creating booking:', error)
+    throw error
+  }
+}

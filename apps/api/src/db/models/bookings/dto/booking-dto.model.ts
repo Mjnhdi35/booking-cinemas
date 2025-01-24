@@ -33,11 +33,6 @@ export class CreateBookingDto {
   @IsMongoId()
   @IsNotEmpty()
   user: Types.ObjectId
-
-  @Expose()
-  @IsNumber()
-  @IsNotEmpty()
-  totalPrice: number
 }
 
 export class UpdateBookingDto {
@@ -62,9 +57,4 @@ export class UpdateBookingDto {
   @IsMongoId()
   @IsOptional()
   user?: Types.ObjectId
-
-  @Expose()
-  @IsNumber()
-  @IsOptional()
-  totalPrice?: number
 }

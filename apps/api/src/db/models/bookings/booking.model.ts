@@ -7,7 +7,6 @@ export interface IBooking extends Document {
   showtime: Date
   seatNumber: number[]
   user: Types.ObjectId | IUser
-  totalPrice: number
 }
 
 const bookingSchema: Schema<IBooking> = new Schema(
@@ -34,10 +33,6 @@ const bookingSchema: Schema<IBooking> = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'User is required'],
-    },
-    totalPrice: {
-      type: Number,
-      required: [true, 'Total price is required'],
     },
   },
   {

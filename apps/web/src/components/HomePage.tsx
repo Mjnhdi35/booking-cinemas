@@ -1,11 +1,10 @@
 import { Box, Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import ToggleButtonFilms from './ToggleButtonFilms/ToggleButtonFilms'
 import MovieItem from './Movies/MovieItem'
 import { Link } from 'react-router-dom'
-
 import { getAllMovies } from '../apis/axiosClient'
 import { MovieModel } from '../models/MovieModel'
+import ToggleButtonFilms from './ToggleButtonCustom/ToggleButtonFilms'
 
 const HomePage = () => {
   const [movies, setMovies] = useState<MovieModel[]>([])

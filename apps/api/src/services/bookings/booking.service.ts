@@ -19,7 +19,7 @@ export class BookingService {
   ) {}
 
   async create(createBookingDto: CreateBookingDto) {
-    const { showtime, seatNumber, totalPrice, user, movie } = createBookingDto
+    const { showtime, seatNumber, user, movie } = createBookingDto
 
     if (!movie) {
       throw new BadRequestException('Phim Không Được Để Trống')
@@ -29,9 +29,6 @@ export class BookingService {
     }
     if (!seatNumber || seatNumber.length === 0) {
       throw new BadRequestException('Số ghế không hợp lệ')
-    }
-    if (!totalPrice) {
-      throw new BadRequestException('Giá vé không được để trống')
     }
 
     let showtimeObj: Date | null = null
@@ -50,7 +47,6 @@ export class BookingService {
         user: new Types.ObjectId(user),
         movie: new Types.ObjectId(movie),
         seatNumber,
-        totalPrice,
       })
 
       return booking

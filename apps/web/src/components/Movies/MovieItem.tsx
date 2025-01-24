@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@mui/material'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export interface MovieItemProps {
   title: string
@@ -98,6 +99,8 @@ const MovieItem: React.FC<MovieItemProps> = ({
               fontSize: '16px',
             }}
             size="small"
+            component={Link}
+            to={`/bookings/${_id}`}
           >
             Đặt vé
           </Button>
