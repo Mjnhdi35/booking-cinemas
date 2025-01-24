@@ -11,22 +11,34 @@ import {
 } from '@mui/material'
 import MovieIcon from '@mui/icons-material/Movie'
 import { getAllMovies } from '../apis/axiosClient'
-import { Movies } from '../models/Movies'
 import { Link } from 'react-router-dom'
+import { MovieModel } from '../models/MovieModel'
+import { useDispatch, useSelector } from 'react-redux'
+import { adminActions, AppDispatch, RootState, userActions } from '../store'
 
 const Header: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch()
+  const isAdminLoggedIn = useSelector(
+    (state: RootState) => state.admin.isLoggedIn,
+  )
+  const isUserLoggedIn = useSelector(
+    (state: RootState) => state.user.isLoggedIn,
+  )
   const [value, setValue] = useState<number>(0)
-  const [movies, setMovies] = useState<Movies[]>([])
+  const [movies, setMovies] = useState<MovieModel[]>([])
   useEffect(() => {
     getAllMovies()
       .then((data) => {
-        console.log(data)
         setMovies(data)
       })
       .catch((err) => {
         console.log(err)
       })
   }, [])
+
+  const logout = (isAdmin: boolean) => {
+    dispatch(isAdmin ? adminActions.logout() : userActions.logout())
+  }
 
   return (
     <AppBar position="sticky" sx={{ bgcolor: '#efebdb' }}>
@@ -96,12 +108,63 @@ const Header: React.FC = () => {
               to="/movies"
               label={'Phim'}
             />
-            <Tab
-              component={Link}
-              sx={{ textTransform: 'none' }}
-              to="/login"
-              label={'Đăng nhập'}
-            />
+            {!isAdminLoggedIn && !isUserLoggedIn && (
+              <>
+                <Tab
+                  component={Link}
+                  sx={{ textTransform: 'none' }}
+                  to={'/login'}
+                  label={'Đăng nhập'}
+                />
+                <Tab
+                  component={Link}
+                  sx={{ textTransform: 'none' }}
+                  to={'/login-admin'}
+                  label={'Auth'}
+                />
+              </>
+            )}
+            {isUserLoggedIn && (
+              <>
+                <Tab
+                  component={Link}
+                  sx={{ textTransform: 'none' }}
+                  to={'/profile'}
+                  label={'Hồ sơ'}
+                />
+                <Tab
+                  component={Link}
+                  sx={{ textTransform: 'none' }}
+                  to={'/'}
+                  onClick={() => logout(false)}
+                  label={'Đăng xuất'}
+                />
+              </>
+            )}
+
+            {isAdminLoggedIn && (
+              <>
+                <Tab
+                  component={Link}
+                  sx={{ textTransform: 'none' }}
+                  to={'/add'}
+                  label={'Thêm phim'}
+                />
+                <Tab
+                  component={Link}
+                  sx={{ textTransform: 'none' }}
+                  to={'/profile'}
+                  label={'Hồ sơ'}
+                />
+                <Tab
+                  component={Link}
+                  sx={{ textTransform: 'none' }}
+                  to={'/'}
+                  onClick={() => logout(false)}
+                  label={'Đăng xuất'}
+                />
+              </>
+            )}
             <Tab
               component={Link}
               sx={{ textTransform: 'none' }}

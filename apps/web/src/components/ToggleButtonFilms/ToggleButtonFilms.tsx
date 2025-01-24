@@ -8,15 +8,15 @@ const ToggleButtonFilms = () => {
     {
       label: 'Phim đang chiếu',
       value: false,
-      selectedColor: '#231f20',
-      unselectedColor: '#6f6247',
+      selectedColor: '#F5FFFA',
+      unselectedColor: '#231f20',
       selectedBgColor: '#6f6247',
       unselectedBgColor: '#efeBDB',
     },
     {
       label: 'Phim sắp chiếu',
       value: true,
-      selectedColor: '#231f20',
+      selectedColor: '#F5FFFA',
       unselectedColor: '#6f6247',
       selectedBgColor: '#6f6247',
       unselectedBgColor: '#efeBDB',

@@ -14,6 +14,7 @@ import { Protected } from '../../decorators/protected.decorator'
 
 import { Request, Response } from 'express'
 import { UserService } from '../../services/users/user.service'
+import { BadRequestException } from '../../core/base/error.base'
 
 @Controller('users')
 export class UserController {
@@ -30,7 +31,10 @@ export class UserController {
         data: user,
       }
     } catch (error: any) {
-      return { status: 'error', message: error.message }
+      if (error instanceof BadRequestException) {
+        return { status: 'error', message: error.message }
+      }
+      return { status: 'error', message: 'Lỗi hệ thống' }
     }
   }
 

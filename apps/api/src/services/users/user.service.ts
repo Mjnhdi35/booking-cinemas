@@ -14,9 +14,16 @@ export class UserService {
   constructor(@Inject(User) private userModel: typeof User) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { password } = createUserDto
+    const { email, password } = createUserDto
+    if (!email) {
+      throw new BadRequestException('Email không được để trống')
+    }
     if (!password) {
       throw new BadRequestException('Mật Khẩu Không Được Để Trống')
+    }
+    const existingUser = await this.userModel.findOne({ email })
+    if (existingUser) {
+      throw new BadRequestException('Người dùng với email này đã tồn tại')
     }
 
     const rounds = getSaltRounds()

@@ -4,8 +4,32 @@ import HomePage from './components/HomePage'
 import Movies from './components/Movies/Movies'
 import Support from './components/Support/Support'
 import Login from './components/Login/Login'
+import LoginAdmin from './components/Login/LoginAdmin'
+import { useDispatch, useSelector } from 'react-redux'
+import { adminActions, AppDispatch, RootState, userActions } from './store'
+import { useEffect } from 'react'
 
 function App() {
+  const dispatch: AppDispatch = useDispatch()
+  const isAdminLoggedIn = useSelector(
+    (state: RootState) => state.admin.isLoggedIn,
+  )
+  const isUserLoggedIn = useSelector(
+    (state: RootState) => state.user.isLoggedIn,
+  )
+
+  console.log('admin logged', isAdminLoggedIn)
+
+  console.log('user logged', isUserLoggedIn)
+
+  useEffect(() => {
+    if (localStorage.getItem('userId')) {
+      dispatch(userActions.login())
+    } else if (localStorage.getItem('adminId')) {
+      dispatch(adminActions.login())
+    }
+  }, [])
+
   return (
     <div>
       <Header />
@@ -15,6 +39,7 @@ function App() {
           <Route path="/movies" element={<Movies />} />
           <Route path="/support" element={<Support />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/login-admin" element={<LoginAdmin />} />
         </Routes>
       </section>
     </div>

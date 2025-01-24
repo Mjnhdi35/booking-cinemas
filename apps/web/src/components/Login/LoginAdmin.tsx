@@ -1,8 +1,8 @@
 import React from 'react'
 import LoginForm from './LoginForm'
 import { AdminModel, UserModel } from '../../models/UserModel'
-import { sendUserLoginRequest } from '../../apis/axiosClient'
-import { AppDispatch, userActions } from '../../store'
+import { sendAdminLoginRequest } from '../../apis/axiosClient'
+import { adminActions, AppDispatch } from '../../store'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
@@ -10,16 +10,15 @@ import { jwtDecode } from 'jwt-decode'
 interface DecodedToken {
   _id: string
   email: string
-  name: string
-  bookings: any[]
-  exp: number
-  iat: number
+  addedMovies: any[]
   createdAt: string
   updatedAt: string
+  exp: number
+  iat: number
   __v: number
 }
 
-const Login = () => {
+const LoginAdmin = () => {
   const dispatch: AppDispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -27,27 +26,25 @@ const Login = () => {
     data: AdminModel | { inputs: UserModel; signup: boolean },
   ) => {
     try {
-      if ('inputs' in data && 'signup' in data) {
-        const { inputs } = data as { inputs: UserModel; signup: boolean }
-        const res = await sendUserLoginRequest(inputs)
+      if ('email' in data && 'password' in data) {
+        const res = await sendAdminLoginRequest(data)
 
         if (res?.access_token) {
           localStorage.setItem('access_token', res.access_token)
           const decodedToken: DecodedToken = jwtDecode(res.access_token)
 
-          const { _id, email, name } = decodedToken
-          localStorage.setItem('userId', _id)
-          localStorage.setItem('userEmail', email)
-          localStorage.setItem('userName', name)
-          dispatch(userActions.login())
+          const { _id: adminId, email } = decodedToken
+          localStorage.setItem('adminId', adminId)
+          localStorage.setItem('adminEmail', email)
+          dispatch(adminActions.login())
 
           navigate('/')
-          alert('User Login successful')
+          alert('Admin Login successful')
         } else {
-          alert('User Login failed: No token returned')
+          alert('Admin Login failed: No token returned')
         }
       } else {
-        alert('Invalid data format')
+        alert('Invalid data format for Admin login')
       }
     } catch (err: any) {
       alert('An error occurred: ' + err.message)
@@ -56,9 +53,9 @@ const Login = () => {
 
   return (
     <div>
-      <LoginForm onSubmit={getDataInput} isAdmin={false} />
+      <LoginForm onSubmit={getDataInput} isAdmin={true} />
     </div>
   )
 }
 
-export default Login
+export default LoginAdmin

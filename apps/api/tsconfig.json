@@ -10,8 +10,8 @@
     "experimentalDecorators": true,
     "outDir": "./dist",
     "strictPropertyInitialization": false,
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "rootDir": "./src"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

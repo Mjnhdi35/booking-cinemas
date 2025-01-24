@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react'
 import ToggleButtonFilms from './ToggleButtonFilms/ToggleButtonFilms'
 import MovieItem from './Movies/MovieItem'
 import { Link } from 'react-router-dom'
-import { Movies } from '../models/Movies'
+
 import { getAllMovies } from '../apis/axiosClient'
+import { MovieModel } from '../models/MovieModel'
 
 const HomePage = () => {
-  const [movies, setMovies] = useState<Movies[]>([])
+  const [movies, setMovies] = useState<MovieModel[]>([])
   useEffect(() => {
     getAllMovies()
       .then((data) => {
-        console.log(data)
         setMovies(data)
       })
       .catch((err) => {
@@ -45,6 +45,7 @@ const HomePage = () => {
               posterUrl={item.posterUrl}
               releaseDate={item.releaseDate}
               description={item.description}
+              actors={item.actors}
             />
           </Box>
         ))}

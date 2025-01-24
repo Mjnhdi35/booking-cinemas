@@ -24,7 +24,7 @@ const movieSchema: Schema<IMovie> = new Schema(
     },
     actors: {
       type: [String],
-      required: [true, 'Actors are required'],
+      required: [true, 'Actors are required'], //đôi lại thành thông tin cơ bản
     },
     releaseDate: {
       type: Date,

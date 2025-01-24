@@ -8,12 +8,13 @@ import {
 } from '@mui/material'
 import React from 'react'
 
-interface MovieItemProps {
+export interface MovieItemProps {
   title: string
   posterUrl: string
   releaseDate: Date
   description: string
   _id: string
+  actors: string[]
 }
 
 const MovieItem: React.FC<MovieItemProps> = ({
@@ -22,6 +23,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
   releaseDate,
   description,
   _id,
+  actors,
 }) => {
   return (
     <Card
@@ -30,6 +32,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
         height: 420,
         margin: 1,
         borderRadius: 1,
+        textAlign: 'center',
         position: 'relative',
         ':hover': {
           boxShadow: '10px 10px 20px #ccc',
@@ -52,7 +55,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
           {title}
         </Typography>
         <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-          {new Date(releaseDate).toDateString()}
+          {new Date(releaseDate).toLocaleDateString()} - {actors.slice(0, 1)}
         </Typography>
       </CardContent>
 
