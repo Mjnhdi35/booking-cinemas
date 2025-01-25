@@ -32,12 +32,13 @@ export class UserService {
     const user = await this.userModel.create({
       ...createUserDto,
       password: hashedPassword,
+      bookings: [],
     })
     return user
   }
 
   async find() {
-    return await this.userModel.find()
+    return await this.userModel.find().populate('bookings')
   }
 
   async findOne(id: string) {
@@ -70,5 +71,25 @@ export class UserService {
 
     await this.userModel.findByIdAndDelete(id)
     return 'Xóa Thành Công'
+  }
+
+  async addBookingToUser(userId: string, bookingId: string) {
+    const user = await this.userModel.findById(userId)
+    if (!user) {
+      throw new BadRequestException('Người Dùng Không Tồn Tại')
+    }
+
+    user.bookings.push(bookingId as any)
+    await user.save()
+  }
+
+  async removeBookingFromUser(userId: string, bookingId: string) {
+    const user = await this.userModel.findById(userId)
+    if (!user) {
+      throw new BadRequestException('Người Dùng Không Tồn Tại')
+    }
+
+    user.bookings.pull(bookingId as any)
+    await user.save()
   }
 }

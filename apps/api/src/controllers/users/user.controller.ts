@@ -92,4 +92,43 @@ export class UserController {
       return { status: 'error', message: error.message }
     }
   }
+
+  @Post(':id/bookings')
+  @Protected()
+  async addBooking(
+    @Param('id') userId: string,
+    @Body() body: { bookingId: string },
+  ) {
+    try {
+      const { bookingId } = body
+      if (!bookingId) {
+        throw new BadRequestException('bookingId không được để trống')
+      }
+
+      await this.userService.addBookingToUser(userId, bookingId)
+      return {
+        status: 'success',
+        message: 'Đã thêm booking vào danh sách của user thành công',
+      }
+    } catch (error: any) {
+      return { status: 'error', message: error.message }
+    }
+  }
+
+  @Delete(':id/bookings/:bookingId')
+  @Protected()
+  async removeBooking(
+    @Param('id') userId: string,
+    @Param('bookingId') bookingId: string,
+  ) {
+    try {
+      await this.userService.removeBookingFromUser(userId, bookingId)
+      return {
+        status: 'success',
+        message: 'Đã xóa booking khỏi danh sách của user thành công',
+      }
+    } catch (error: any) {
+      return { status: 'error', message: error.message }
+    }
+  }
 }

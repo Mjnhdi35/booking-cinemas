@@ -23,6 +23,10 @@ const userSchema: Schema<IUser> = new Schema(
       type: String,
       required: [true, 'Password is required'],
       minlength: 6,
+      match: [
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character',
+      ],
     },
     bookings: [
       {
@@ -33,9 +37,15 @@ const userSchema: Schema<IUser> = new Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 )
-
+userSchema.virtual('bookingsDetail', {
+  ref: 'Booking',
+  localField: '_id',
+  foreignField: 'user',
+})
 const User: Model<IUser> = mongoose.model<IUser>('User', userSchema)
 
 export default User

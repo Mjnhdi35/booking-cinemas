@@ -18,43 +18,64 @@ export class BookingService {
     @Inject(User) private userModel: typeof User,
   ) {}
 
+  // Create a new booking
   async create(createBookingDto: CreateBookingDto) {
     const { showtime, seatNumber, user, movie } = createBookingDto
 
-    if (!movie) {
-      throw new BadRequestException('Phim Không Được Để Trống')
-    }
-    if (!user) {
-      throw new BadRequestException('Người Dùng Không Được Để Trống')
-    }
-    if (!seatNumber || seatNumber.length === 0) {
+    // Validate input data
+    if (!movie) throw new BadRequestException('Phim không được để trống')
+    if (!user) throw new BadRequestException('Người dùng không được để trống')
+    if (!seatNumber || seatNumber.length === 0)
       throw new BadRequestException('Số ghế không hợp lệ')
-    }
 
     let showtimeObj: Date | null = null
     if (showtime) {
       showtimeObj = new Date(showtime)
-
-      if (isNaN(showtimeObj.getTime())) {
+      if (isNaN(showtimeObj.getTime()))
         throw new BadRequestException('Ngày chiếu không hợp lệ')
-      }
     }
+
+    const session = await mongoose.startSession()
+    session.startTransaction()
 
     try {
-      const booking = await this.bookingModel.create({
-        ...createBookingDto,
-        showtime: showtimeObj,
-        user: new Types.ObjectId(user),
-        movie: new Types.ObjectId(movie),
-        seatNumber,
-      })
+      // Verify Movie exists
+      const movieRecord = await this.movieModel.findById(movie).session(session)
+      if (!movieRecord) throw new BadRequestException('Phim không tồn tại')
 
-      return booking
+      // Verify User exists
+      const userRecord = await this.userModel.findById(user).session(session)
+      if (!userRecord) throw new BadRequestException('Người dùng không tồn tại')
+
+      // Create new booking
+      const booking = await this.bookingModel.create(
+        [
+          {
+            ...createBookingDto,
+            showtime: showtimeObj,
+            user: new Types.ObjectId(user),
+            movie: new Types.ObjectId(movie),
+            seatNumber,
+          },
+        ],
+        { session },
+      )
+
+      // Update user with the new booking
+      userRecord.bookings.push(booking[0]._id)
+      await userRecord.save({ session })
+
+      await session.commitTransaction()
+      return booking[0]
     } catch (error: any) {
-      if (error instanceof BadRequestException) throw error
-      throw new BadRequestException('Không thể tạo đặt vé: ' + error.message)
+      await session.abortTransaction()
+      throw new BadRequestException(`Không thể tạo đặt vé: ${error.message}`)
+    } finally {
+      session.endSession()
     }
   }
+
+  // Get all bookings
   async find() {
     try {
       return await this.bookingModel.find().populate('movie user').exec()
@@ -63,86 +84,92 @@ export class BookingService {
     }
   }
 
+  // Get a single booking by ID
   async findOne(id: string) {
-    let booking
     try {
-      booking = await this.bookingModel
+      const booking = await this.bookingModel
         .findById(id)
         .populate('movie user')
         .exec()
-    } catch (err) {
+
+      if (!booking) throw new BadRequestException('Booking không tồn tại')
+      return booking
+    } catch (error) {
       throw new BadRequestException('Không thể tìm thấy booking')
     }
-
-    if (!booking) {
-      throw new BadRequestException('Booking không tồn tại')
-    }
-
-    return booking
   }
 
+  // Update a booking by ID
   async update(id: string, updateBookingDto: UpdateBookingDto) {
-    const booking = await this.bookingModel.findById(id)
-    if (!booking) {
-      throw new BadRequestException('Không thể tìm thấy booking')
-    }
-
-    if (updateBookingDto.movie) {
-      const movieExists = await this.movieModel.findById(updateBookingDto.movie)
-      if (!movieExists) {
-        throw new BadRequestException('Movie không tồn tại')
-      }
-    }
-
-    if (updateBookingDto.user) {
-      const userExists = await this.userModel.findById(updateBookingDto.user)
-      if (!userExists) {
-        throw new BadRequestException('User không tồn tại')
-      }
-    }
-
-    try {
-      const updatedBooking = await this.bookingModel.findByIdAndUpdate(
-        id,
-        updateBookingDto,
-        {
-          new: true,
-        },
-      )
-      return updatedBooking
-    } catch (err) {
-      throw new BadRequestException('Không thể cập nhật booking')
-    }
-  }
-
-  async delete(id: string) {
-    const booking = await this.bookingModel.findById(id).populate('user movie')
-    if (!booking) {
-      throw new BadRequestException('Không thể xóa booking')
-    }
-
     const session = await mongoose.startSession()
     session.startTransaction()
 
     try {
-      if (booking.user instanceof User && booking.movie instanceof Movie) {
-        booking.user.bookings.pull(booking._id)
-        booking.movie.bookings.pull(booking._id)
-        await booking.user.save({ session })
-        await booking.movie.save({ session })
-      } else {
-        throw new BadRequestException('User hoặc Movie không hợp lệ')
+      const booking = await this.bookingModel.findById(id).session(session)
+      if (!booking) throw new BadRequestException('Booking không tồn tại')
+
+      if (updateBookingDto.movie) {
+        const movieExists = await this.movieModel
+          .findById(updateBookingDto.movie)
+          .session(session)
+        if (!movieExists) throw new BadRequestException('Phim không tồn tại')
+      }
+
+      if (updateBookingDto.user) {
+        const userExists = await this.userModel
+          .findById(updateBookingDto.user)
+          .session(session)
+        if (!userExists)
+          throw new BadRequestException('Người dùng không tồn tại')
+      }
+
+      const updatedBooking = await this.bookingModel
+        .findByIdAndUpdate(id, updateBookingDto, { new: true, session })
+        .populate('movie user')
+        .exec()
+
+      await session.commitTransaction()
+      return updatedBooking
+    } catch (error: any) {
+      await session.abortTransaction()
+      throw new BadRequestException(
+        `Không thể cập nhật booking: ${error.message}`,
+      )
+    } finally {
+      session.endSession()
+    }
+  }
+
+  // Delete a booking by ID
+  async delete(id: string) {
+    const session = await mongoose.startSession()
+    session.startTransaction()
+
+    try {
+      const booking = await this.bookingModel
+        .findById(id)
+        .populate('user movie')
+        .session(session)
+      if (!booking) throw new BadRequestException('Booking không tồn tại')
+
+      // Remove booking from user's list
+      const userRecord = await this.userModel
+        .findById(booking.user)
+        .session(session)
+      if (userRecord) {
+        userRecord.bookings.pull(booking._id)
+        await userRecord.save({ session })
       }
 
       await booking.deleteOne({ session })
       await session.commitTransaction()
-    } catch (err) {
+
+      return 'Xóa booking thành công'
+    } catch (error: any) {
       await session.abortTransaction()
-      throw new BadRequestException('Không thể xóa booking')
+      throw new BadRequestException(`Không thể xóa booking: ${error.message}`)
     } finally {
       session.endSession()
     }
-
-    return 'Xóa booking thành công'
   }
 }

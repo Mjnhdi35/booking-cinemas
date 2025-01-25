@@ -80,10 +80,10 @@ export const newBooking = async (data: {
 }) => {
   try {
     const response = await axios.post('/bookings', {
-      movie: data.movie, // Đảm bảo movieId là chuỗi hợp lệ
+      movie: data.movie,
       showtime: data.showtime,
-      seatNumber: data.seatNumber, // Mảng số ghế
-      user: data.user, // User ID
+      seatNumber: data.seatNumber,
+      user: data.user,
     })
     console.log('Booking created successfully:', response.data)
     return response.data
@@ -91,4 +91,15 @@ export const newBooking = async (data: {
     console.error('Error creating booking:', error)
     throw error
   }
+}
+export const getUserBooking = async () => {
+  const id = localStorage.getItem('userId')
+  const res = await axios.get(`/users/${id}`).catch((err) => console.log(err))
+
+  if (res?.data.data.status !== 'success') {
+    return console.log(' vui long thu lai')
+  }
+
+  const resData = res.data.data.data
+  return resData
 }

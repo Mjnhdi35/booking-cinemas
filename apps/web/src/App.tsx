@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { adminActions, AppDispatch, RootState, userActions } from './store'
 import { useEffect } from 'react'
 import Bookings from './components/Bookings/Bookings'
+import UserProfile from './components/Profile/UserProfile'
 
 function App() {
   const dispatch: AppDispatch = useDispatch()
@@ -41,6 +42,8 @@ function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/login" element={<Login />} />
           <Route path="/login-admin" element={<LoginAdmin />} />
+          <Route path="/user" element={<UserProfile />} />
+
           <Route path="/bookings/:id" element={<Bookings />} />
         </Routes>
       </section>
